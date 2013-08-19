@@ -116,6 +116,8 @@ return array(
 
 		'Cartalyst\Sentry\SentryServiceProvider',
 
+		'Way\Generators\GeneratorsServiceProvider'
+
 	),
 
 	/*
