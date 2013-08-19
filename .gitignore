@@ -2,6 +2,6 @@
 /vendor
 composer.phar
 .DS_Store
-/app/config/database.php
-/app/config/mail.php
-/app/storage/*
+app/config/database.php
+app/config/mail.php
+app/storage/*
