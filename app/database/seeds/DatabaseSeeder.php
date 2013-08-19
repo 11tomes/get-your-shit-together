@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('CommentsSeeder');
 		$this->call('LabelsTableSeeder');
 		$this->call('PrioritiesTableSeeder');
+		$this->call('TodosTableSeeder');
 	}
 
 }
