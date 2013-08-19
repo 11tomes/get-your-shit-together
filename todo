@@ -1,0 +1,52 @@
+secret key: 3M1pHtjZoSRkspP7OrNVWTwM2exNin4c
+The to-do list i want:
+	has two-level priority marks a1, a2, b1, b2,
+	should support top levels a-c and second level 1-3
+	has labels or folders, each is required to be in a folder
+	has up/down lift system (optional) and points system
+	cannot complete lower priority tasks unless higher priority tasks are done
+	registration (using laravel4-starter-kit)
+	use sqlite
+	has open and dead lines
+	use handwriting fonts
+	tasks have notes, deadlines, priority, labels
+	api driven
+
+users
+	-- user info
+todos
+	user
+	todo
+	-- no description, this differs from notes
+	notes (144 chars)
+	deadline
+	last_updated_on
+	done_on
+
+priorities
+	priority
+	level
+	order
+	color
+	description
+
+labels
+	label
+	color
+	description
+	parent label -- nesting
+
+todo_labels
+	todo
+	label
+
+todo_priorities
+	todo
+	priority
+
+priorities
+	add/edit/delete
+labels
+	add/edit/delete
+todos
+	add/edit/delete/
