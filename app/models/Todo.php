@@ -10,10 +10,7 @@ class Todo extends Eloquent {
 	public $timestamps = TRUE;
 
 	public static $rules = array(
-		'todo' => 'required',
-		//'notes' => 'required',
-		//'to_be_completed_at' => 'required',
-		//'completed_at' => 'required'
+		'todo' => 'required'
 	);
 
 	/**
@@ -71,12 +68,15 @@ class Todo extends Eloquent {
 
 	/**
 	 * Return a human readable difference between the current date
-	 * and the deadline.
+	 * and the completed at date. If completed at date is not set,
+	 * this will return 'someday'.
+	 *
+	 * @return string
 	 */
 	public function getDaysTillCompletionDate()
 	{
 		if ( ! $this->to_be_completed_at) {
-			return 'unknown';
+			return 'someday';
 		}
 
 		$now = Carbon::now();
