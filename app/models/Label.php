@@ -11,4 +11,9 @@ class Label extends Eloquent {
 		//'description' => 'required',
 		'parent_id' => 'required'
 	);
+
+	public function todos()
+	{
+		return $this->belongsToMany('Todo');
+	}
 }

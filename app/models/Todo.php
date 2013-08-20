@@ -22,4 +22,14 @@ class Todo extends Eloquent {
 
 		$this->attributes['to_be_completed_at'] = $to_be_completed_at;
 	}
+
+	public function labels()
+	{
+		return $this->belongsToMany('Label');
+	}
+
+	public function priorities()
+	{
+		return $this->belongsToMany('Priority');
+	}
 }
