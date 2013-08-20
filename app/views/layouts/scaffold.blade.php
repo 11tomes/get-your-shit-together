@@ -4,14 +4,35 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-		<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Handlee' rel='stylesheet' type='text/css'>
 		<style>
-			.handwritten { font-family: 'Shadows Into Light', cursive !important; }
+			h1, .handwritten { font-family: 'Handlee', cursive !important; font-weight: 400; }
 			.handwritten a { color: black !important; }
 		</style>
 	</head>
 
 	<body>
+		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand handwritten" href="http://www.cavemag.com/10-things-you-can-learn-from-suits/">Get Your Sh*t Together</a>
+				</div>
+
+				<div class="collapse navbar-collapse">
+					<ul class="nav navbar-nav">
+						<li>{{ link_to_route('todos.index', 'Today') }}</li>
+						<li>{{ link_to_route('todos.labels', 'Labels') }}</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
 		<div class="container">
 			@if (Session::has('alert'))
 				<?php list($type, $message) = Session::get('alert'); ?>
