@@ -20,6 +20,16 @@
             {{ Form::text('to_be_completed_at') }}
         </li>
 
+        <li>
+            {{ Form::label('priorities[]', 'Priorities:') }}
+            {{ Form::select('priorities[]', $priorities, $priorities, array('multiple')) }}
+        </li>
+
+        <li>
+            {{ Form::label('labels[]', 'Labels:') }}
+            {{ Form::select('labels[]', $labels, $labels, array('multiple')) }}
+        </li>
+
 		<li>
 			{{ Form::submit('Update', array('class' => 'btn btn-info')) }}
 			{{ link_to_route('todos.show', 'Cancel', $todo->id, array('class' => 'btn')) }}

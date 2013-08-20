@@ -21,6 +21,16 @@
             {{ Form::text('to_be_completed_at') }}
         </li>
 
+        <li>
+            {{ Form::label('priorities[]', 'Priorities:') }}
+            {{ Form::select('priorities[]', $priorities, $priorities, array('multiple')) }}
+        </li>
+
+        <li>
+            {{ Form::label('labels[]', 'Labels:') }}
+            {{ Form::select('labels[]', $labels, $labels, array('multiple')) }}
+        </li>
+
 		<li>
 			{{ Form::submit('Submit', array('class' => 'btn')) }}
 		</li>
