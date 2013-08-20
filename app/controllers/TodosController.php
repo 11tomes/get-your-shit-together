@@ -21,6 +21,7 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
+		// @todo: order by level, order
 		$todos = $this->todo->all();
 
 		return View::make('todos.index', compact('todos'));

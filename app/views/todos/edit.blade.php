@@ -16,13 +16,8 @@
         </li>
 
         <li>
-            {{ Form::label('deadline', 'Deadline:') }}
-            {{ Form::text('deadline') }}
-        </li>
-
-        <li>
-            {{ Form::label('done_on', 'Done_on:') }}
-            {{ Form::text('done_on') }}
+            {{ Form::label('to_be_completed_at', 'To Be Completed At:') }}
+            {{ Form::text('to_be_completed_at') }}
         </li>
 
 		<li>
