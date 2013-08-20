@@ -144,6 +144,7 @@ Route::post('blog/{postSlug}', 'BlogController@postView');
 Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 
 
-Route::resource('labels', 'LabelsController');
-Route::resource('priorities', 'PrioritiesController');
+Route::resource('settings/labels', 'LabelsController');
+Route::resource('settings/priorities', 'PrioritiesController');
+Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
 Route::resource('todos', 'TodosController');

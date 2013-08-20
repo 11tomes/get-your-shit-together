@@ -24,6 +24,19 @@ class TodosController extends BaseController {
 	}
 
 	/**
+	 * Display the todos grouped by label
+	 *
+	 * @return Response
+	 */
+	public function labels()
+	{
+		// @todo refactor
+		$labels = Label::all();
+
+		return View::make('todos.labels', compact('labels'));
+	}
+
+	/**
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
@@ -31,7 +44,12 @@ class TodosController extends BaseController {
 	public function index()
 	{
 		// @todo: order by level, order, and add labels and priorities
-		$todos = $this->todo->all();
+		$todos = $this->todo
+			->join('priority_todo', 'todo_id', '=', 'todos.id')
+			->join('priorities', 'priorities.id', '=', 'priority_id')
+			->orderBy('level')
+			->select('todos.*')
+			->get();
 
 		return View::make('todos.index', compact('todos'));
 	}
