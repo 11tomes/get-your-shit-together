@@ -10,6 +10,6 @@ class Priority extends Eloquent {
 		'level' => 'required',
 		'order' => 'required',
 		'color' => 'required',
-		'description' => 'required'
+		//'description' => 'required'
 	);
 }

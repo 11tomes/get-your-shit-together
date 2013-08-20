@@ -4,7 +4,7 @@ class PrioritiesTableSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('priorities')->truncate();
+		DB::table('priorities')->delete();
 
 		$priorities = array(
 			array('priority' => 'A', 'level' => 1, 'order' => 1, 'color' => 'ff0000', 'description' => ''),

@@ -8,7 +8,7 @@ class Label extends Eloquent {
 	public static $rules = array(
 		'label' => 'required',
 		'color' => 'required',
-		'description' => 'required',
+		//'description' => 'required',
 		'parent_id' => 'required'
 	);
 }

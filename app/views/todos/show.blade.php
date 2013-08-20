@@ -10,18 +10,16 @@
 	<thead>
 		<tr>
 			<th>Todo</th>
-				<th>Notes</th>
-				<th>Deadline</th>
-				<th>Done_on</th>
+			<th>Notes</th>
+			<th>To Be Completed At</th>
 		</tr>
 	</thead>
 
 	<tbody>
 		<tr>
 			<td>{{{ $todo->todo }}}</td>
-					<td>{{{ $todo->notes }}}</td>
-					<td>{{{ $todo->deadline }}}</td>
-					<td>{{{ $todo->done_on }}}</td>
+			<td>{{{ $todo->notes }}}</td>
+			<td>{{{ $todo->to_be_completed_at }}}</td>
                     <td>{{ link_to_route('todos.edit', 'Edit', array($todo->id), array('class' => 'btn btn-info')) }}</td>
                     <td>
                         {{ Form::open(array('method' => 'DELETE', 'route' => array('todos.destroy', $todo->id))) }}

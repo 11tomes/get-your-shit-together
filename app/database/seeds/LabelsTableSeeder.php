@@ -4,7 +4,7 @@ class LabelsTableSeeder extends Seeder {
 
 	public function run()
 	{
-		DB::table('labels')->truncate();
+		DB::table('labels')->delete();
 
 		$labels = array(
 			array('label' => 'Work', 'color' => 'ee3e64', 'description' => '', 'parent_id' => '0'),
