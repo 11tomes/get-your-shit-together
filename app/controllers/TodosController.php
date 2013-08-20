@@ -9,9 +9,17 @@ class TodosController extends BaseController {
 	 */
 	protected $todo;
 
+	// @todo add doc
+	protected $priorities;
+
+	protected $labels;
+
 	public function __construct(Todo $todo)
 	{
 		$this->todo = $todo;
+		// @todo: refactor
+		$this->priorities = Priority::all();
+		$this->labels = Label::all();
 	}
 
 	/**
@@ -21,7 +29,7 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
-		// @todo: order by level, order
+		// @todo: order by level, order, and add labels and priorities
 		$todos = $this->todo->all();
 
 		return View::make('todos.index', compact('todos'));
@@ -34,7 +42,18 @@ class TodosController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('todos.create');
+		// @todo: duplicate code, where will we put this?
+		$priorities = array();
+		foreach ($this->priorities as $priority) {
+			$priorities[$priority->id] = $priority->priority;
+		}
+
+		$labels = array();
+		foreach ($this->labels as $label) {
+			$labels[$label->id] = $label->label;
+		}
+
+		return View::make('todos.create', compact('priorities', 'labels'));
 	}
 
 	/**
@@ -44,12 +63,17 @@ class TodosController extends BaseController {
 	 */
 	public function store()
 	{
-		$input = Input::all();
-		$validation = Validator::make($input, Todo::$rules);
+		$todo_input = array_except(Input::all(), array('priorities', 'labels'));
+		$priorities_input = Input::get('priorities');
+		$labels_input = Input::get('labels');
 
+		$validation = Validator::make($todo_input, Todo::$rules);
 		if ($validation->passes())
 		{
-			$this->todo->create($input);
+			$todo = $this->todo->create($todo_input);
+
+			$todo->priorities()->sync($priorities_input);
+			$todo->labels()->sync($labels_input);
 
 			return Redirect::route('todos.index');
 		}
@@ -83,12 +107,22 @@ class TodosController extends BaseController {
 	{
 		$todo = $this->todo->find($id);
 
+		$priorities = array();
+		foreach ($this->priorities as $priority) {
+			$priorities[$priority->id] = $priority->priority;
+		}
+
+		$labels = array();
+		foreach ($this->labels as $label) {
+			$labels[$label->id] = $label->label;
+		}
+
 		if (is_null($todo))
 		{
 			return Redirect::route('todos.index');
 		}
 
-		return View::make('todos.edit', compact('todo'));
+		return View::make('todos.edit', compact('todo', 'priorities', 'labels'));
 	}
 
 	/**
@@ -99,13 +133,18 @@ class TodosController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$input = array_except(Input::all(), '_method');
-		$validation = Validator::make($input, Todo::$rules);
+		$todo_input = array_except(Input::all(), array('_method', 'priorities', 'labels'));
+		$priorities_input = Input::get('priorities');
+		$labels_input = Input::get('labels');
 
+		$validation = Validator::make($todo_input, Todo::$rules);
 		if ($validation->passes())
 		{
 			$todo = $this->todo->find($id);
-			$todo->update($input);
+			$todo->update($todo_input);
+
+			$todo->priorities()->sync($priorities_input);
+			$todo->labels()->sync($labels_input);
 
 			return Redirect::route('todos.show', $id);
 		}

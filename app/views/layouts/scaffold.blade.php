@@ -2,8 +2,10 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+		<link href='http://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
 		<style>
+			.handwritten { font-family: 'Shadows Into Light', cursive !important };
 			table form { margin-bottom: 0; }
 			form ul { margin-left: 0; list-style: none; }
 			.error { color: red; font-style: italic; }

@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class Todo extends Eloquent {
 	protected $guarded = array();
 
@@ -14,6 +16,38 @@ class Todo extends Eloquent {
 		//'completed_at' => 'required'
 	);
 
+	/**
+	 *
+	 * @return DateTime | NULL
+	 */
+	public function getToBeCompletedAtAttribute()
+	{
+		if ( ! $this->attributes['to_be_completed_at']) {
+			return NULL;
+		}
+
+		return $this->asDateTime($this->attributes['to_be_completed_at']);
+	}
+
+	/**
+	 *
+	 * @return DateTime | NULL
+	 */
+	public function getCompletedAtAttribute()
+	{
+		if ( ! $this->attributes['completed_at']) {
+			return NULL;
+		}
+
+		return $this->asDateTime($this->attributes['completed_at']);
+	}
+
+	/**
+	 * @todo explain what this does
+	 *
+	 * @param string $to_be_completed_at
+	 * @return self
+	 */
 	public function setToBeCompletedAtAttribute($to_be_completed_at)
 	{
 		if ( ! $to_be_completed_at) {
@@ -21,6 +55,8 @@ class Todo extends Eloquent {
 		}
 
 		$this->attributes['to_be_completed_at'] = $to_be_completed_at;
+
+		return $this;
 	}
 
 	public function labels()
@@ -31,5 +67,38 @@ class Todo extends Eloquent {
 	public function priorities()
 	{
 		return $this->belongsToMany('Priority');
+	}
+
+	/**
+	 * Return a human readable difference between the current date
+	 * and the deadline.
+	 */
+	public function getDaysTillCompletionDate()
+	{
+		if ( ! $this->to_be_completed_at) {
+			return 'unknown';
+		}
+
+		$now = Carbon::now();
+
+		return $now->diffForHumans($this->to_be_completed_at);
+	}
+
+	/**
+	 * @return Priority | NULL
+	 */
+	public function topPriority()
+	{
+		// @todo does not work
+		return $this->priorities()->orderBy('level')->first();
+	}
+
+	/**
+	 *
+	 * @return bool
+	 */
+	public function isDone()
+	{
+		return (bool) $this->to_be_completed_at;
 	}
 }
