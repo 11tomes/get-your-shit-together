@@ -51,10 +51,10 @@ class PrioritiesController extends BaseController {
 		{
 			$this->priority->create($input);
 
-			return Redirect::route('priorities.index');
+			return Redirect::route('settings.priorities.index');
 		}
 
-		return Redirect::route('priorities.create')
+		return Redirect::route('settings.priorities.create')
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -85,7 +85,7 @@ class PrioritiesController extends BaseController {
 
 		if (is_null($priority))
 		{
-			return Redirect::route('priorities.index');
+			return Redirect::route('settings.priorities.index');
 		}
 
 		return View::make('priorities.edit', compact('priority'));
@@ -107,10 +107,10 @@ class PrioritiesController extends BaseController {
 			$priority = $this->priority->find($id);
 			$priority->update($input);
 
-			return Redirect::route('priorities.show', $id);
+			return Redirect::route('settings.priorities.show', $id);
 		}
 
-		return Redirect::route('priorities.edit', $id)
+		return Redirect::route('settings.priorities.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -126,7 +126,7 @@ class PrioritiesController extends BaseController {
 	{
 		$this->priority->find($id)->delete();
 
-		return Redirect::route('priorities.index');
+		return Redirect::route('settings.priorities.index');
 	}
 
 }

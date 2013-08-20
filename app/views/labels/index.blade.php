@@ -4,7 +4,7 @@
 
 <h1>All Labels</h1>
 
-<p>{{ link_to_route('labels.create', 'Add new label') }}</p>
+<p>{{ link_to_route('settings.labels.create', 'Add new label') }}</p>
 
 @if ($labels->count())
 	<table class="table table-striped table-bordered">
@@ -24,9 +24,9 @@
 					<td>{{{ $label->color }}}</td>
 					<td>{{{ $label->description }}}</td>
 					<td>{{{ $label->parent_id }}}</td>
-                    <td>{{ link_to_route('labels.edit', 'Edit', array($label->id), array('class' => 'btn btn-info')) }}</td>
+                    <td>{{ link_to_route('settings.labels.edit', 'Edit', array($label->id), array('class' => 'btn btn-info')) }}</td>
                     <td>
-                        {{ Form::open(array('method' => 'DELETE', 'route' => array('labels.destroy', $label->id))) }}
+                        {{ Form::open(array('method' => 'DELETE', 'route' => array('settings.labels.destroy', $label->id))) }}
                             {{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
                         {{ Form::close() }}
                     </td>

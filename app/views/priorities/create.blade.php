@@ -4,7 +4,7 @@
 
 <h1>Create Priority</h1>
 
-{{ Form::open(array('route' => 'priorities.store')) }}
+{{ Form::open(array('route' => 'settings.priorities.store')) }}
 	<ul>
         <li>
             {{ Form::label('priority', 'Priority:') }}
