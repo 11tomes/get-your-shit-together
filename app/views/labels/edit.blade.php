@@ -3,7 +3,7 @@
 @section('main')
 
 <h1>Edit Label</h1>
-{{ Form::model($label, array('method' => 'PATCH', 'route' => array('labels.update', $label->id))) }}
+{{ Form::model($label, array('method' => 'PATCH', 'route' => array('settings.labels.update', $label->id))) }}
 	<ul>
         <li>
             {{ Form::label('label', 'Label:') }}
@@ -27,7 +27,7 @@
 
 		<li>
 			{{ Form::submit('Update', array('class' => 'btn btn-info')) }}
-			{{ link_to_route('labels.show', 'Cancel', $label->id, array('class' => 'btn')) }}
+			{{ link_to_route('settings.labels.show', 'Cancel', $label->id, array('class' => 'btn')) }}
 		</li>
 	</ul>
 {{ Form::close() }}

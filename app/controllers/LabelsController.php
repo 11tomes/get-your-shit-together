@@ -50,10 +50,10 @@ class LabelsController extends BaseController {
 		{
 			$this->label->create($input);
 
-			return Redirect::route('labels.index');
+			return Redirect::route('settings.labels.index');
 		}
 
-		return Redirect::route('labels.create')
+		return Redirect::route('settings.labels.create')
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -84,7 +84,7 @@ class LabelsController extends BaseController {
 
 		if (is_null($label))
 		{
-			return Redirect::route('labels.index');
+			return Redirect::route('settings.labels.index');
 		}
 
 		return View::make('labels.edit', compact('label'));
@@ -106,10 +106,10 @@ class LabelsController extends BaseController {
 			$label = $this->label->find($id);
 			$label->update($input);
 
-			return Redirect::route('labels.show', $id);
+			return Redirect::route('settings.labels.show', $id);
 		}
 
-		return Redirect::route('labels.edit', $id)
+		return Redirect::route('settings.labels.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -125,7 +125,7 @@ class LabelsController extends BaseController {
 	{
 		$this->label->find($id)->delete();
 
-		return Redirect::route('labels.index');
+		return Redirect::route('settings.labels.index');
 	}
 
 }

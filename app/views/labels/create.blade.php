@@ -4,7 +4,7 @@
 
 <h1>Create Label</h1>
 
-{{ Form::open(array('route' => 'labels.store')) }}
+{{ Form::open(array('route' => 'settings.labels.store')) }}
 	<ul>
         <li>
             {{ Form::label('label', 'Label:') }}

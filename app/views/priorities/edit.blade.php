@@ -3,7 +3,7 @@
 @section('main')
 
 <h1>Edit Priority</h1>
-{{ Form::model($priority, array('method' => 'PATCH', 'route' => array('priorities.update', $priority->id))) }}
+{{ Form::model($priority, array('method' => 'PATCH', 'route' => array('settings.priorities.update', $priority->id))) }}
 	<ul>
         <li>
             {{ Form::label('priority', 'Priority:') }}
@@ -32,7 +32,7 @@
 
 		<li>
 			{{ Form::submit('Update', array('class' => 'btn btn-info')) }}
-			{{ link_to_route('priorities.show', 'Cancel', $priority->id, array('class' => 'btn')) }}
+			{{ link_to_route('settings.priorities.show', 'Cancel', $priority->id, array('class' => 'btn')) }}
 		</li>
 	</ul>
 {{ Form::close() }}
