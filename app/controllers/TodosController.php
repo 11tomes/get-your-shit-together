@@ -14,6 +14,7 @@ class TodosController extends BaseController {
 
 	protected $labels;
 
+	// @todo: who passes $todo?
 	public function __construct(Todo $todo)
 	{
 		$this->todo = $todo;
@@ -81,20 +82,7 @@ class TodosController extends BaseController {
 		return Redirect::route('todos.create')
 			->withInput()
 			->withErrors($validation)
-			->with('message', 'There were validation errors.');
-	}
-
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$todo = $this->todo->findOrFail($id);
-
-		return View::make('todos.show', compact('todo'));
+			->with('alert', array('danger', 'There were validation errors.'));
 	}
 
 	/**
@@ -146,13 +134,13 @@ class TodosController extends BaseController {
 			$todo->priorities()->sync($priorities_input);
 			$todo->labels()->sync($labels_input);
 
-			return Redirect::route('todos.show', $id);
+			return Redirect::route('todos.index');
 		}
 
 		return Redirect::route('todos.edit', $id)
 			->withInput()
 			->withErrors($validation)
-			->with('message', 'There were validation errors.');
+			->with('alert', array('danger', 'There were validation errors.'));
 	}
 
 	/**
@@ -165,7 +153,8 @@ class TodosController extends BaseController {
 	{
 		$this->todo->find($id)->delete();
 
-		return Redirect::route('todos.index');
+		return Redirect::route('todos.index')
+			->with('alert', array('success', 'One todo deleted.'));
 	}
 
 }

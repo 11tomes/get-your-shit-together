@@ -2,45 +2,45 @@
 
 @section('main')
 
-<h1>Edit Todo</h1>
+<h1>{{ link_to_route('todos.index', 'Return to all todos', NULL, array('class' => 'btn btn-default')) }} Edit Todo</h1>
+
 {{ Form::model($todo, array('method' => 'PATCH', 'route' => array('todos.update', $todo->id))) }}
-	<ul>
-        <li>
-            {{ Form::label('todo', 'Todo:') }}
-            {{ Form::text('todo') }}
-        </li>
+	<div class="form-group">
+		{{ Form::label('todo', 'Todo') }}
+		{{ Form::text('todo', NULL, array('class' => 'form-control')) }}
+	</div>
 
-        <li>
-            {{ Form::label('notes', 'Notes:') }}
-            {{ Form::text('notes') }}
-        </li>
+	<div class="form-group">
+		{{ Form::label('notes', 'Notes') }}
+		{{ Form::textarea('notes', NULL, array('class' => 'form-control')) }}
+	</div>
 
-        <li>
-            {{ Form::label('to_be_completed_at', 'To Be Completed At:') }}
-            {{ Form::text('to_be_completed_at') }}
-        </li>
+	<div class="form-group">
+		{{ Form::label('to_be_completed_at', 'To Be Completed At') }}
+		{{ Form::text('to_be_completed_at', NULL, array('class' => 'form-control')) }}
+	</div>
 
-        <li>
-            {{ Form::label('priorities[]', 'Priorities:') }}
-            {{ Form::select('priorities[]', $priorities, $priorities, array('multiple')) }}
-        </li>
+	<div class="form-group">
+		{{ Form::label('priorities[]', 'Priorities') }}
+		{{ Form::select('priorities[]', $priorities, array(), array('multiple', 'class' => 'form-control')) }}
+	</div>
 
-        <li>
-            {{ Form::label('labels[]', 'Labels:') }}
-            {{ Form::select('labels[]', $labels, $labels, array('multiple')) }}
-        </li>
+	<div class="form-group">
+		{{ Form::label('labels[]', 'Labels') }}
+		{{ Form::select('labels[]', $labels, array(), array('multiple', 'class' => 'form-control')) }}
+	</div>
 
-		<li>
-			{{ Form::submit('Update', array('class' => 'btn btn-info')) }}
-			{{ link_to_route('todos.show', 'Cancel', $todo->id, array('class' => 'btn')) }}
-		</li>
-	</ul>
+	{{ Form::submit('Update', array('class' => 'btn btn-primary')) }}
 {{ Form::close() }}
 
 @if ($errors->any())
-	<ul>
+	<div class="alert alert-info">
 		{{ implode('', $errors->all('<li class="error">:message</li>')) }}
-	</ul>
+	</div>
 @endif
+<hr>
+{{ Form::open(array('method' => 'DELETE', 'route' => array('todos.destroy', $todo->id))) }}
+{{ Form::submit('Delete', array('class' => 'btn btn-danger')) }}
+{{ Form::close() }}
 
 @stop
