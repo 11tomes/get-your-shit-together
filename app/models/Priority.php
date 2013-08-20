@@ -12,4 +12,9 @@ class Priority extends Eloquent {
 		'color' => 'required',
 		//'description' => 'required'
 	);
+
+	public function todos()
+	{
+		return $this->belongsToMany('Todo');
+	}
 }
