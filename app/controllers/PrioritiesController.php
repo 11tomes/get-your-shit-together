@@ -22,7 +22,7 @@ class PrioritiesController extends BaseController {
 	public function index()
 	{
 		// @todo: move this to all of Priority class
-		$priorities = $this->priority->orderBy('level')->orderBy('order')->get();
+		$priorities = $this->priority->orderBy('order')->get();
 
 		return View::make('priorities.index', compact('priorities'));
 	}

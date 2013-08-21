@@ -21,8 +21,13 @@
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('priorities[]', 'Priorities') }}
-		{{ Form::select('priorities[]', $priorities, array(), array('multiple', 'class' => 'form-control')) }}
+		{{ Form::label('priority_id', 'Priority') }}
+		{{ Form::select('priority_id', $priorities, NULL, array('class' => 'form-control')) }}
+	</div>
+
+	<div class="form-group">
+		{{ Form::label('order', 'Order') }}
+		{{ Form::text('order', NULL, array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">

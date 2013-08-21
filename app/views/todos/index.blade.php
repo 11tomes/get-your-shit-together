@@ -11,7 +11,7 @@
 		<tbody>
 			@foreach ($todos as $todo)
 			<tr>
-				<td<?php // @todo echo " style='color: #'{$todo->topPriority->color};"; ?>>{{ Form::checkbox('completed_at', $todo->completed_at, $todo->isDone()); }}</td>
+				<td<?php echo " style='background-color: #{$todo->priority->color}';"; ?>>{{ Form::checkbox('completed_at', $todo->completed_at, $todo->isDone()); }}</td>
 				<td>
 				@foreach ($todo->labels as $label)
 					<span class="label" style="background: #{{{ $label->color }}} !important;">{{{ $label->label }}}</span>

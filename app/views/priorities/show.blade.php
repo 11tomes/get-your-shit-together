@@ -10,20 +10,18 @@
 	<thead>
 		<tr>
 			<th>Priority</th>
-				<th>Level</th>
-				<th>Order</th>
-				<th>Color</th>
-				<th>Description</th>
+			<th>Order</th>
+			<th>Color</th>
+			<th>Description</th>
 		</tr>
 	</thead>
 
 	<tbody>
 		<tr>
 			<td>{{{ $priority->priority }}}</td>
-					<td>{{{ $priority->level }}}</td>
-					<td>{{{ $priority->order }}}</td>
-					<td>{{{ $priority->color }}}</td>
-					<td>{{{ $priority->description }}}</td>
+			<td>{{{ $priority->order }}}</td>
+			<td>{{{ $priority->color }}}</td>
+			<td>{{{ $priority->description }}}</td>
                     <td>{{ link_to_route('settings.priorities.edit', 'Edit', array($priority->id), array('class' => 'btn btn-info')) }}</td>
                     <td>
                         {{ Form::open(array('method' => 'DELETE', 'route' => array('settings.priorities.destroy', $priority->id))) }}

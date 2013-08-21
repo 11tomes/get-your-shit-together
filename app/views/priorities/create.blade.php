@@ -12,11 +12,6 @@
         </li>
 
         <li>
-            {{ Form::label('level', 'Level:') }}
-            {{ Form::input('number', 'level') }}
-        </li>
-
-        <li>
             {{ Form::label('order', 'Order:') }}
             {{ Form::input('number', 'order') }}
         </li>

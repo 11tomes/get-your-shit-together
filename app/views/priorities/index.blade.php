@@ -11,10 +11,11 @@
 		<thead>
 			<tr>
 				<th>Priority</th>
-				<th>Level</th>
 				<th>Order</th>
 				<th>Color</th>
 				<th>Description</th>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 
@@ -22,7 +23,6 @@
 			@foreach ($priorities as $priority)
 				<tr>
 					<td>{{{ $priority->priority }}}</td>
-					<td>{{{ $priority->level }}}</td>
 					<td>{{{ $priority->order }}}</td>
 					<td>{{{ $priority->color }}}</td>
 					<td>{{{ $priority->description }}}</td>
