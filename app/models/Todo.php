@@ -10,7 +10,9 @@ class Todo extends Eloquent {
 	public $timestamps = TRUE;
 
 	public static $rules = array(
-		'todo' => 'required'
+		'todo'		=> 'required',
+		'priority_id'	=> 'required',
+		'order'		=> 'required'
 	);
 
 	/**
@@ -61,9 +63,9 @@ class Todo extends Eloquent {
 		return $this->belongsToMany('Label');
 	}
 
-	public function priorities()
+	public function priority()
 	{
-		return $this->belongsToMany('Priority');
+		return $this->belongsTo('Priority');
 	}
 
 	/**
@@ -85,20 +87,11 @@ class Todo extends Eloquent {
 	}
 
 	/**
-	 * @return Priority | NULL
-	 */
-	public function topPriority()
-	{
-		// @todo does not work
-		return $this->priorities()->orderBy('level')->first();
-	}
-
-	/**
 	 *
 	 * @return bool
 	 */
 	public function isDone()
 	{
-		return (bool) $this->to_be_completed_at;
+		return (bool) $this->completed_at;
 	}
 }

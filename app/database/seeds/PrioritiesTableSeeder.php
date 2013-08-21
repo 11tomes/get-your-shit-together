@@ -7,12 +7,9 @@ class PrioritiesTableSeeder extends Seeder {
 		DB::table('priorities')->delete();
 
 		$priorities = array(
-			array('priority' => 'A', 'level' => 1, 'order' => 1, 'color' => 'ff0000', 'description' => ''),
-			array('priority' => 'B', 'level' => 1, 'order' => 2, 'color' => '00ff00', 'description' => ''),
-			array('priority' => 'C', 'level' => 1, 'order' => 3, 'color' => '0000ff', 'description' => ''),
-			array('priority' => '1', 'level' => 2, 'order' => 1, 'color' => '000000', 'description' => ''),
-			array('priority' => '2', 'level' => 2, 'order' => 2, 'color' => '000000', 'description' => ''),
-			array('priority' => '3', 'level' => 2, 'order' => 3, 'color' => '000000', 'description' => '')
+			array('priority' => 'A', 'order' => 1, 'color' => 'ff0000', 'description' => ''),
+			array('priority' => 'B', 'order' => 2, 'color' => '00ff00', 'description' => ''),
+			array('priority' => 'C', 'order' => 3, 'color' => '0000ff', 'description' => '')
 		);
 
 		DB::table('priorities')->insert($priorities);

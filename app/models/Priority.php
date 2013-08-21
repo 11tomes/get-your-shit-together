@@ -6,15 +6,13 @@ class Priority extends Eloquent {
 	public $timestamps = FALSE;
 
 	public static $rules = array(
-		'priority' => 'required',
-		'level' => 'required',
-		'order' => 'required',
-		'color' => 'required',
-		//'description' => 'required'
+		'priority'	=> 'required',
+		'order'		=> 'required',
+		'color'		=> 'required'
 	);
 
 	public function todos()
 	{
-		return $this->belongsToMany('Todo');
+		return $this->hasMany('Todo');
 	}
 }

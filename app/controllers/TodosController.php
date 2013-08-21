@@ -30,7 +30,7 @@ class TodosController extends BaseController {
 	 */
 	public function labels()
 	{
-		// @todo refactor
+		// @todo refactor, only include labels with todos?
 		$labels = Label::all();
 
 		return View::make('todos.labels', compact('labels'));
@@ -43,12 +43,9 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
-		// @todo: order by level, order, and add labels and priorities
 		$todos = $this->todo
-			->join('priority_todo', 'todo_id', '=', 'todos.id')
-			->join('priorities', 'priorities.id', '=', 'priority_id')
-			->orderBy('level')
-			->select('todos.*')
+			// where completeed at is null or completed at = today
+			->orderBy('priority_id')->orderBy('order')
 			->get();
 
 		return View::make('todos.index', compact('todos'));
@@ -82,8 +79,7 @@ class TodosController extends BaseController {
 	 */
 	public function store()
 	{
-		$todo_input = array_except(Input::all(), array('priorities', 'labels'));
-		$priorities_input = Input::get('priorities');
+		$todo_input = array_except(Input::all(), array('_token', 'labels'));
 		$labels_input = Input::get('labels');
 
 		$validation = Validator::make($todo_input, Todo::$rules);
@@ -91,7 +87,6 @@ class TodosController extends BaseController {
 		{
 			$todo = $this->todo->create($todo_input);
 
-			$todo->priorities()->sync($priorities_input);
 			$todo->labels()->sync($labels_input);
 
 			return Redirect::route('todos.index');
@@ -139,17 +134,16 @@ class TodosController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$todo_input = array_except(Input::all(), array('_method', 'priorities', 'labels'));
-		$priorities_input = Input::get('priorities');
+		$todo_input = array_except(Input::all(), array('_method', '_token', 'labels'));
 		$labels_input = Input::get('labels');
 
+		// @todo add validation to labels
 		$validation = Validator::make($todo_input, Todo::$rules);
 		if ($validation->passes())
 		{
 			$todo = $this->todo->find($id);
 			$todo->update($todo_input);
 
-			$todo->priorities()->sync($priorities_input);
 			$todo->labels()->sync($labels_input);
 
 			return Redirect::route('todos.index');
