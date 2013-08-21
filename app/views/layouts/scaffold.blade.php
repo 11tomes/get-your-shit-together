@@ -3,8 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-		<link href='http://fonts.googleapis.com/css?family=Handlee' rel='stylesheet' type='text/css'>
+		<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel='stylesheet' type='text/css'>
+		<link href="{{ asset('assets/css/Handlee') }}" rel='stylesheet' type='text/css'>
 		<style>
 			h1, .handwritten { font-family: 'Handlee', cursive !important; font-weight: 400; }
 			.handwritten a { color: black !important; }
