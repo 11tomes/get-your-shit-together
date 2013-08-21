@@ -1,5 +1,7 @@
 <?php
 
+use Carbon\Carbon;
+
 class TodosController extends BaseController {
 
 	/**
@@ -14,6 +16,12 @@ class TodosController extends BaseController {
 
 	protected $labels;
 
+	/**
+	 * 
+	 * @var Carbon\Carbon
+	 */
+	protected $now;
+
 	// @todo: who passes $todo?
 	public function __construct(Todo $todo)
 	{
@@ -21,6 +29,7 @@ class TodosController extends BaseController {
 		// @todo: refactor
 		$this->priorities = Priority::all();
 		$this->labels = Label::all();
+		$this->now = Carbon::now();
 	}
 
 	/**
@@ -47,8 +56,9 @@ class TodosController extends BaseController {
 			// where completeed at is null or completed at = today
 			->orderBy('priority_id')->orderBy('order')
 			->get();
+		$now = $this->now;
 
-		return View::make('todos.index', compact('todos'));
+		return View::make('todos.index', compact('todos', $now));
 	}
 
 	/**
