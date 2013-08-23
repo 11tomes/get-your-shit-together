@@ -33,7 +33,9 @@ class LabelsController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('labels.create');
+		$labels = $this->label->asOptionArray();
+
+		return View::make('labels.create', compact('labels'));
 	}
 
 	/**
@@ -81,13 +83,14 @@ class LabelsController extends BaseController {
 	public function edit($id)
 	{
 		$label = $this->label->find($id);
+		$labels = $this->label->asOptionArray();
 
 		if (is_null($label))
 		{
 			return Redirect::route('settings.labels.index');
 		}
 
-		return View::make('labels.edit', compact('label'));
+		return View::make('labels.edit', compact('label', 'labels'));
 	}
 
 	/**

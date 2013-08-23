@@ -7,7 +7,6 @@
 |
 | Register all the admin routes.
 |
-*/
 
 Route::group(array('prefix' => 'admin'), function()
 {
@@ -52,6 +51,7 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/', array('as' => 'admin', 'uses' => 'Controllers\Admin\DashboardController@getIndex'));
 
 });
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +60,6 @@ Route::group(array('prefix' => 'admin'), function()
 |
 |
 |
-*/
 
 Route::group(array('prefix' => 'auth'), function()
 {
@@ -88,6 +87,7 @@ Route::group(array('prefix' => 'auth'), function()
 	Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout'));
 
 });
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -96,7 +96,6 @@ Route::group(array('prefix' => 'auth'), function()
 |
 |
 |
-*/
 
 Route::group(array('prefix' => 'account'), function()
 {
@@ -117,6 +116,7 @@ Route::group(array('prefix' => 'account'), function()
 	Route::post('change-email', 'Controllers\Account\ChangeEmailController@postIndex');
 
 });
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -127,7 +127,6 @@ Route::group(array('prefix' => 'account'), function()
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the Closure to execute when that URI is requested.
 |
-*/
 
 Route::get('about-us', function()
 {
@@ -142,9 +141,12 @@ Route::get('blog/{postSlug}', array('as' => 'view-post', 'uses' => 'BlogControll
 Route::post('blog/{postSlug}', 'BlogController@postView');
 
 Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
+*/
 
 
 Route::resource('settings/labels', 'LabelsController');
 Route::resource('settings/priorities', 'PrioritiesController');
 Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
+//Route::patch('todos/accomplish', array('uses' => 'TodosController@accomplish', 'as' => 'todos.accomplish'));
+//Route::patch('todos/todo', array('uses' => 'TodosController@todo', 'as' => 'todos.todo'));
 Route::resource('todos', 'TodosController');
