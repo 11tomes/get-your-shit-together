@@ -22,18 +22,21 @@ $(document).ready(function() {
 	<tbody>
 	@foreach ($todos as $todo)
 		<tr>
-			<td<?php echo " style='background-color: #{$todo->priority->color}';"; ?>>
-				{{ Form::checkbox('mark_as_completed', $todo->isDone(), $todo->isDone()); }}
-				{{ Form::hidden('completed_at', $todo->completed_at) }}
+			<td{{ " style='border-left: 10px solid #{$todo->priority->color}';" }}>
+			{{ Form::model($todo, array('method' => 'PATCH', 'route' => array('todos.update', $todo->id))) }}
+				{{ Form::hidden('completed_at', ($todo->isDone() ? '' : $now)) }}
+				{{ Form::button('<i class="icon-check' . ($todo->isDone() ? '' : '-empty') . '"></i>', array('type' => 'submit', 'class' => 'btn btn-default')) }}
+			{{ Form::close() }}
 			</td>
 			<td>
 			@foreach ($todo->labels as $label)
-				<span class="label" style="background: #{{{ $label->color }}} !important;">{{{ $label->label }}}</span>
+				<span class="label" style="background: #{{{ $label->color }}} !important;">{{{ $label->complete_label }}}</span>
 			@endforeach
 				<span class="handwritten"<?php echo $todo->isDone() ? ' style="text-decoration: line-through;"' : '' ?>>
 					{{ link_to_route('todos.edit', $todo->todo, array($todo->id)) }}
 				</span>
 			</td>
+			<td class="handwritten">{{{ $todo->getDaysTillCompletionDate() }}}</td>
 		</tr>
 	@endforeach
 	</tbody>

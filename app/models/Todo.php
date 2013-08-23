@@ -58,6 +58,22 @@ class Todo extends Eloquent {
 		return $this;
 	}
 
+	/**
+	 *
+	 * @param string $to_be_completed_at
+	 * @return self
+	 */
+	public function setCompletedAtAttribute($completed_at)
+	{
+		if ( ! $completed_at) {
+			$completed_at = NULL;
+		}
+
+		$this->attributes['completed_at'] = $completed_at;
+
+		return $this;
+	}
+
 	public function labels()
 	{
 		return $this->belongsToMany('Label');
