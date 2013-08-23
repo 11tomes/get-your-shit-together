@@ -7,7 +7,7 @@
 {{ Form::open(array('route' => 'todos.store')) }}
 	<div class="form-group">
 		{{ Form::label('todo', 'Todo') }}
-		{{ Form::text('todo', NULL, array('class' => 'form-control')) }}
+		{{ Form::text('todo', $todo, array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">

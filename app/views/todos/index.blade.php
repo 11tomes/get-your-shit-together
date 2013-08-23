@@ -15,7 +15,7 @@ $(document).ready(function() {
 </script>
 <h1 class="handwritten">All Todos</h1>
 
-<p>{{ link_to_route('todos.create', 'Add new todo', NULL, array('class' => 'btn btn-success')) }}</p>
+<p></p>
 
 @if ($todos->count())
 <table class="table">
@@ -39,6 +39,19 @@ $(document).ready(function() {
 			<td class="handwritten">{{{ $todo->getDaysTillCompletionDate() }}}</td>
 		</tr>
 	@endforeach
+		<tr>
+		{{ Form::open(array('route' => 'todos.create', 'method' => 'GET')) }}
+			<td style="border-left: 10px solid #ffffff;">
+				{{ Form::button('<i class="icon-check-empty"></i>', array('type' => 'button', 'disabled' => 'disabled', 'class' => 'btn btn-default')) }}
+			</td>
+			<td>
+				{{ Form::text('todo', NULL, array('placeholder' => 'Write a todo', 'class' => 'form-control')) }}
+			</td>
+			<td>
+				{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
+			</td>
+		{{ Form::close() }}
+		</tr>
 	</tbody>
 </table>
 @else

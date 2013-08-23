@@ -76,10 +76,12 @@ class TodosController extends BaseController {
 			$priorities[$priority->id] = $priority->priority;
 		}
 
-		// @todo: static call?
-		$labels = Label::asOoptionsAray();
+		$todo = Input::get('todo') ?: '';
 
-		return View::make('todos.create', compact('priorities', 'labels'));
+		// @todo: static call?
+		$labels = Label::asOptionsArray();
+
+		return View::make('todos.create', compact('priorities', 'labels', 'todo'));
 	}
 
 	/**
