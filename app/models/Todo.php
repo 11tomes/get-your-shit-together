@@ -110,4 +110,36 @@ class Todo extends Eloquent {
 	{
 		return (bool) $this->completed_at;
 	}
+
+	/**
+	 * Return the top priority uncompleted todo. Returns NULL if none is found.
+	 *
+	 * @return self | NULL
+	 */
+	public static function getTopPriority()
+	{
+		return self::select('todos.*')
+			->join('priorities', 'priorities.id', '=', 'todos.priority_id')
+			->orderBy('priorities.order')
+			->orderBy('todos.order')
+			->whereNull('completed_at')
+			->first();
+	}
+
+	/**
+	 * Return all todos ordered by priority
+	 *
+	 * @return array @todo collection
+	 */
+	public static function all($columns = array())
+	{
+		$columns = $columns ?: 'todos.*';
+
+		return self::select($columns)
+			->join('priorities', 'priorities.id', '=', 'todos.priority_id')
+			->orderBy('priorities.order')
+			->orderBy('todos.order')
+			->get();
+	}
+
 }

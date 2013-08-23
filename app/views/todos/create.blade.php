@@ -27,7 +27,7 @@
 
 	<div class="form-group">
 		{{ Form::label('order', 'Order') }}
-		{{ Form::text('order', NULL, array('class' => 'form-control')) }}
+		{{ Form::input('number', 'order', NULL, array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">

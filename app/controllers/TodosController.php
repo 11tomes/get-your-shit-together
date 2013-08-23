@@ -53,10 +53,7 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
-		$todos = $this->todo
-			// where completeed at is null or completed at = today
-			->orderBy('priority_id')->orderBy('order')
-			->get();
+		$todos = $this->todo->all();
 
 		$now = $this->now;
 
@@ -180,6 +177,13 @@ class TodosController extends BaseController {
 	public function accomplish($id)
 	{
 		$todo = $this->todo->find($id);
+		$top_todo = $this->todo->getTopPriority();
+
+		if ($top_todo->id != $todo->id) {
+			return Redirect::route('todos.index')
+				->with('alert', array('danger', 'Nope, not that. You still have more important task to do.'));
+		}
+
 		$input = array('completed_at' => $this->now);
 		$todo->update($input);
 
