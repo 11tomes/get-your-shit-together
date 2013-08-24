@@ -1,8 +1,9 @@
-<Gk!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		@section('styles')
 		<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.no-icons.min.css" rel="stylesheet">
 		<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
 		<link href='http://fonts.googleapis.com/css?family=Handlee' rel='stylesheet' type='text/css'>
@@ -10,6 +11,7 @@
 			h1, .handwritten { font-family: 'Handlee', cursive !important; font-weight: 400; }
 			.handwritten a { color: black !important; }
 		</style>
+		@show
 	</head>
 
 	<body>
@@ -45,8 +47,11 @@
 
 			@yield('main')
 		</div>
+		@section('scripts')
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		@show
+
 	</body>
 
 </html>
