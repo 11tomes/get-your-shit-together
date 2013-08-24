@@ -8,7 +8,7 @@
 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-4">
 	<div class="panel" style="border-color: #{{{ $label->color }}} !important;">
 		<div class="panel-heading" style="background: #{{{ $label->color }}} !important; border-color: #{{{ $label->color }}} !important;">
-			{{{ $label->label }}} <span class="badge">{{{ count($label->todos)  }}}</span>
+			{{{ $label->name }}} <span class="badge">{{{ count($label->todos)  }}}</span>
 		</div>
 		<ul class="list-group">
 		@foreach ($label->todos as $todo)
