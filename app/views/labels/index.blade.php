@@ -13,7 +13,7 @@
 				<th>Label</th>
 				<th>Color</th>
 				<th>Description</th>
-				<th>Parent_id</th>
+				<th>Parent</th>
 			</tr>
 		</thead>
 
@@ -21,9 +21,9 @@
 			@foreach ($labels as $label)
 				<tr>
 					<td>{{{ $label->label }}}</td>
-					<td>{{{ $label->color }}}</td>
+					<td style="background-color: #{{{ $label->color }}};"></td>
 					<td>{{{ $label->description }}}</td>
-					<td>{{{ $label->parent_id }}}</td>
+					<td>{{{ $label->parent ? $label->parent->complete_label : '' }}}</td>
                     <td>{{ link_to_route('settings.labels.edit', 'Edit', array($label->id), array('class' => 'btn btn-info')) }}</td>
                     <td>
                         {{ Form::open(array('method' => 'DELETE', 'route' => array('settings.labels.destroy', $label->id))) }}

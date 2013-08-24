@@ -17,8 +17,9 @@ class TodosController extends BaseController {
 	protected $labels;
 
 	/**
-	 * 
-	 * @var Carbon\Carbon
+	 * Represents the current timestamp
+	 *
+	 * @var Carbon
 	 */
 	protected $now;
 
@@ -52,13 +53,11 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
-		$todos = $this->todo
-			// where completeed at is null or completed at = today
-			->orderBy('priority_id')->orderBy('order')
-			->get();
+		$todos = $this->todo->all();
+
 		$now = $this->now;
 
-		return View::make('todos.index', compact('todos', $now));
+		return View::make('todos.index', compact('todos', 'now'));
 	}
 
 	/**
@@ -74,12 +73,12 @@ class TodosController extends BaseController {
 			$priorities[$priority->id] = $priority->priority;
 		}
 
-		$labels = array();
-		foreach ($this->labels as $label) {
-			$labels[$label->id] = $label->label;
-		}
+		$todo = Input::get('todo') ?: '';
 
-		return View::make('todos.create', compact('priorities', 'labels'));
+		// @todo: static call?
+		$labels = Label::asOptionsArray();
+
+		return View::make('todos.create', compact('priorities', 'labels', 'todo'));
 	}
 
 	/**
@@ -123,13 +122,10 @@ class TodosController extends BaseController {
 			$priorities[$priority->id] = $priority->priority;
 		}
 
-		$labels = array();
-		foreach ($this->labels as $label) {
-			$labels[$label->id] = $label->label;
-		}
+		// @todo: static call
+		$labels = Label::asOptionsArray();
 
-		if (is_null($todo))
-		{
+		if (is_null($todo)) {
 			return Redirect::route('todos.index');
 		}
 
@@ -145,24 +141,88 @@ class TodosController extends BaseController {
 	public function update($id)
 	{
 		$todo_input = array_except(Input::all(), array('_method', '_token', 'labels'));
-		$labels_input = Input::get('labels');
+		$labels_input = Input::get('labels'); // @todo add validation to labels
 
-		// @todo add validation to labels
+		// @todo work around for Input::has
+		$completed_at = Input::get('completed_at');
+		$for_completion = isset($completed_at);
+
+		if ($for_completion) {
+			return $completed_at ? $this->accomplish($id) : $this->todo($id);
+		}
+
 		$validation = Validator::make($todo_input, Todo::$rules);
-		if ($validation->passes())
-		{
+		if ($validation->passes()) {
 			$todo = $this->todo->find($id);
 			$todo->update($todo_input);
 
 			$todo->labels()->sync($labels_input);
 
-			return Redirect::route('todos.index');
+			return Redirect::route('todos.index')
+				->with('alert', array('info', 'Todo up-to-date.'));
 		}
 
 		return Redirect::route('todos.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('alert', array('danger', 'There were validation errors.'));
+	}
+
+	/**
+	 * Mark a todo as completed, today.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function accomplish($id)
+	{
+		$todo = $this->todo->find($id);
+		$top_todo = $this->todo->getTopPriority();
+
+		if ($top_todo->id != $todo->id) {
+			return Redirect::route('todos.index')
+				->with('alert', array('danger', 'Nope, not that. You still have more important task to do.'));
+		}
+
+		$input = array('completed_at' => $this->now);
+		$todo->update($input);
+
+		return Redirect::route('todos.index')
+			->with('alert', array('success', 'One down.'));
+	}
+
+	/**
+	 * Mark a todo as not yet completed, again.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function todo($id)
+	{
+		$todo = $this->todo->find($id);
+		$input = array('completed_at' => NULL);
+		$todo->update($input);
+
+		return Redirect::route('todos.index')
+			->with('alert', array('info', 'One more, again.'));
+	}
+
+	/**
+	 * Mark a todo as completed today.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function done($id)
+	{
+		$todo = $this->todo->find($id);
+		$input = array(
+			'completed_at' => Carbon::now()
+		);
+		$todo->update($input);
+
+		return Redirect::route('todos.index', $id)
+			->with('alert', array('success', 'One down.'));
 	}
 
 	/**
