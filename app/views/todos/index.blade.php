@@ -16,7 +16,7 @@
 			</td>
 			<td>
 			@foreach ($todo->labels as $label)
-				<span class="label" style="background: #{{{ $label->color }}};">{{{ $label->complete_label }}}</span>
+				<span class="label" style="background: #{{{ $label->color }}};">{{{ $label->complete_name }}}</span>
 			@endforeach
 				<span class="handwritten"<?php echo $todo->isDone() ? ' style="text-decoration: line-through;"' : '' ?>>
 					{{ link_to_route('todos.edit', $todo->todo, array($todo->id)) }}

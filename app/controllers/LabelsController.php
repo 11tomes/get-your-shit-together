@@ -33,7 +33,7 @@ class LabelsController extends BaseController {
 	 */
 	public function create()
 	{
-		$labels = $this->label->asOptionArray();
+		$labels = $this->label->asOptionsArray();
 
 		return View::make('labels.create', compact('labels'));
 	}
@@ -62,19 +62,6 @@ class LabelsController extends BaseController {
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		$label = $this->label->findOrFail($id);
-
-		return View::make('labels.show', compact('label'));
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -83,7 +70,7 @@ class LabelsController extends BaseController {
 	public function edit($id)
 	{
 		$label = $this->label->find($id);
-		$labels = $this->label->asOptionArray();
+		$labels = $this->label->asOptionsArray();
 
 		if (is_null($label))
 		{
@@ -109,7 +96,7 @@ class LabelsController extends BaseController {
 			$label = $this->label->find($id);
 			$label->update($input);
 
-			return Redirect::route('settings.labels.show', $id);
+			return Redirect::route('settings.labels.index');
 		}
 
 		return Redirect::route('settings.labels.edit', $id)
