@@ -10,7 +10,7 @@
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
-				<th>Priority</th>
+				<th>Name</th>
 				<th>Order</th>
 				<th>Color</th>
 				<th>Description</th>
@@ -22,7 +22,7 @@
 		<tbody>
 		@foreach ($priorities as $priority)
 			<tr>
-				<td>{{{ $priority->priority }}}</td>
+				<td>{{{ $priority->name }}}</td>
 				<td>{{{ $priority->order }}}</td>
 				<td style="background-color: #{{{ $priority->color }}};"></td>
 				<td>{{{ $priority->description }}}</td>
