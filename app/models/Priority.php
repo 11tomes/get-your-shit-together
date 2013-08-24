@@ -6,9 +6,9 @@ class Priority extends Eloquent {
 	public $timestamps = FALSE;
 
 	public static $rules = array(
-		'name'		=> 'required',
-		'order'		=> 'required',
-		'color'		=> 'required'
+		'name'		=> 'required|size:1',
+		'order'		=> 'required|integer',
+		'color'		=> 'required|size:6|regex:^(?:[0-9a-fA-F]{3}){1,2}$'
 	);
 
 	public function todos()
