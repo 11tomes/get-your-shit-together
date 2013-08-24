@@ -44,7 +44,7 @@ class Label extends Eloquent {
 			$parent_name = $this->parent->complete_name;
 		}
 
-		return $parent_name ? "{$parent_name}/{$this->label}" : $this->label;
+		return $parent_name ? "{$parent_name}/{$this->name}" : $this->name;
 	}
 
 	/**
