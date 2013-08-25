@@ -60,6 +60,7 @@ Route::group(array('prefix' => 'admin'), function()
 |
 |
 |
+*/
 
 Route::group(array('prefix' => 'auth'), function()
 {
@@ -87,7 +88,6 @@ Route::group(array('prefix' => 'auth'), function()
 	Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@getLogout'));
 
 });
-*/
 
 /*
 |--------------------------------------------------------------------------
@@ -140,13 +140,17 @@ Route::post('contact-us', 'ContactUsController@postIndex');
 Route::get('blog/{postSlug}', array('as' => 'view-post', 'uses' => 'BlogController@getView'));
 Route::post('blog/{postSlug}', 'BlogController@postView');
 
-Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 */
+Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 
 
-Route::resource('settings/labels', 'LabelsController');
-Route::resource('settings/priorities', 'PrioritiesController');
-Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
-//Route::patch('todos/accomplish', array('uses' => 'TodosController@accomplish', 'as' => 'todos.accomplish'));
-//Route::patch('todos/todo', array('uses' => 'TodosController@todo', 'as' => 'todos.todo'));
-Route::resource('todos', 'TodosController');
+
+Route::group(array('before' => 'admin-auth'), function()
+{
+	Route::resource('settings/labels', 'LabelsController');
+	Route::resource('settings/priorities', 'PrioritiesController');
+	Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
+	//Route::patch('todos/accomplish', array('uses' => 'TodosController@accomplish', 'as' => 'todos.accomplish'));
+	//Route::patch('todos/todo', array('uses' => 'TodosController@todo', 'as' => 'todos.todo'));
+	Route::resource('todos', 'TodosController');
+});

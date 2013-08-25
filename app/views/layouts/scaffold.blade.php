@@ -11,9 +11,12 @@
 			body, h1 { font-family: 'Handlee', cursive !important; font-weight: 400; }
 			.handwritten a { color: black !important; }
 		</style>
+		@section('styles')
+		@show
 	</head>
 
 	<body>
+		@section('navigation')
 		<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -34,6 +37,7 @@
 				</div>
 			</div>
 		</nav>
+		@show
 
 		<div class="container">
 			@if (Session::has('alert'))
@@ -48,6 +52,8 @@
 		</div>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 		<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+		@section('scripts')
+		@show
 	</body>
 
 </html>

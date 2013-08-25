@@ -6,80 +6,26 @@ Account Sign up ::
 @parent
 @stop
 
+@section('styles')
+	@parent
+	<link href="{{ asset('assets/css/signin.css') }}" rel="stylesheet">
+@stop
+
+@section('navigation')
+@stop
+
 {{-- Page content --}}
 @section('content')
-<div class="page-header">
-	<h3>Sign up</h3>
-</div>
-<div class="row">
-	<form method="post" action="{{ route('signup') }}" class="form-horizontal" autocomplete="off">
-		<!-- CSRF Token -->
-		<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-		<!-- First Name -->
-		<div class="control-group{{ $errors->first('first_name', ' error') }}">
-		<label class="control-label" for="first_name">First Name</label>
-			<div class="controls">
-				<input type="text" name="first_name" id="first_name" value="{{ Input::old('first_name') }}" />
-				{{ $errors->first('first_name', '<span class="help-block">:message</span>') }}
-			</div>
-		</div>
-
-		<!-- Last Name -->
-		<div class="control-group{{ $errors->first('last_name', ' error') }}">
-			<label class="control-label" for="last_name">Last Name</label>
-			<div class="controls">
-				<input type="text" name="last_name" id="last_name" value="{{ Input::old('last_name') }}" />
-				{{ $errors->first('last_name', '<span class="help-block">:message</span>') }}
-			</div>
-		</div>
-
-		<!-- Email -->
-		<div class="control-group{{ $errors->first('email', ' error') }}">
-			<label class="control-label" for="email">Email</label>
-			<div class="controls">
-				<input type="text" name="email" id="email" value="{{ Input::old('email') }}" />
-				{{ $errors->first('email', '<span class="help-block">:message</span>') }}
-			</div>
-		</div>
-
-		<!-- Email Confirm -->
-		<div class="control-group{{ $errors->first('email_confirm', ' error') }}">
-			<label class="control-label" for="email_confirm">Confirm Email</label>
-			<div class="controls">
-				<input type="text" name="email_confirm" id="email_confirm" value="{{ Input::old('email_confirm') }}" />
-				{{ $errors->first('email_confirm', '<span class="help-block">:message</span>') }}
-			</div>
-		</div>
-
-		<!-- Password -->
-		<div class="control-group{{ $errors->first('password', ' error') }}">
-			<label class="control-label" for="password">Password</label>
-			<div class="controls">
-				<input type="password" name="password" id="password" value="" />
-				{{ $errors->first('password', '<span class="help-block">:message</span>') }}
-			</div>
-		</div>
-
-		<!-- Password Confirm -->
-		<div class="control-group{{ $errors->first('password_confirm', ' error') }}">
-			<label class="control-label" for="password_confirm">Confirm Password</label>
-			<div class="controls">
-				<input type="password" name="password_confirm" id="password_confirm" value="" />
-				{{ $errors->first('password_confirm', '<span class="help-block">:message</span>') }}
-			</div>
-		</div>
-
-		<hr>
-
-		<!-- Form actions -->
-		<div class="control-group">
-			<div class="controls">
-				<a class="btn" href="{{ route('home') }}">Cancel</a>
-
-				<button type="submit" class="btn">Sign up</button>
-			</div>
-		</div>
-	</form>
-</div>
+<form method="post" action="{{ route('signup') }}" autocomplete="off" class="form-signin">
+	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+	<h2 class="form-signin-heading">Sign Up</h2>
+@foreach (array('first_name', 'last_name', 'email', 'email_confirm') as $text_field)
+	{{ Form::text($text_field, Input::old($text_field), array('placeholder' => ucwords(str_replace('_', ' ', $text_field)), 'class' => 'form-control')) }}
+	{{ Form::label('') }}
+@endforeach
+@foreach (array('password', 'password_confirm') as $password_field)
+	{{ Form::password($password_field, array('placeholder' => ucwords(str_replace('_', ' ', $password_field)), 'class' => 'form-control')) }}
+@endforeach
+	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
+</form>
 @stop
