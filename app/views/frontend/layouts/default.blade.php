@@ -19,15 +19,15 @@
 
 		<!-- CSS
 		================================================== -->
-		<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+		<link href="{{ asset('assets/css/bootstrap.no-icons.min.css') }}" rel="stylesheet">
 
-		<style>
 		@section('styles')
+		<style>
 		body {
 			padding: 10px 0;
 		}
-		@show
 		</style>
+		@show
 
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 		<!--[if lt IE 9]>
@@ -46,6 +46,7 @@
 	<body>
 		<!-- Container -->
 		<div class="container">
+			@section('navigation')
 			<!-- Navbar -->
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner">
@@ -89,6 +90,7 @@
 					</div>
 				</div>
 			</div>
+			@show
 
 			<!-- Notifications -->
 			@include('frontend/notifications')
@@ -100,13 +102,15 @@
 
 			<!-- Footer -->
 			<footer>
-				<p>&copy; Company {{ date('Y') }}</p>
+				{{-- <p>&copy; Company {{ date('Y') }}</p> --}}
 			</footer>
 		</div>
 
+		@section('scripts')
 		<!-- Javascripts
 		================================================== -->
 		<script src="{{ asset('assets/js/jquery.1.10.2.min.js') }}"></script>
 		<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+		@show
 	</body>
 </html>
