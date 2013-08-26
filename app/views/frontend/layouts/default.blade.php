@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<!-- Basic Page Needs
-		================================================== -->
 		<meta charset="utf-8" />
 		<title>
 			@section('title')
-			Bootstrap
 			@show
+			:: Git Your Sh*t Together
 		</title>
 		<meta name="keywords" content="your, awesome, keywords, here" />
 		<meta name="author" content="Jon Doe" />
 		<meta name="description" content="Lorem ipsum dolor sit amet, nihil fabulas et sea, nam posse menandri scripserit no, mei." />
-
-		<!-- Mobile Specific Metas
-		================================================== -->
+		{{-- Mobile Specific Metas --}}
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-		<!-- CSS
-		================================================== -->
+		{{-- Basic Stylesheets --}}
 		<link href="{{ asset('assets/css/bootstrap.no-icons.min.css') }}" rel="stylesheet">
-
-		@section('styles')
+		<link href="{{ asset('assets/css/Handlee.css') }}" rel="stylesheet">
 		<style>
-		body {
-			padding: 10px 0;
-		}
+			body, h1 { font-family: 'Handlee', cursive !important; font-weight: 400; }
+			.handwritten a { color: black !important; }
 		</style>
+		{{-- Additional Stylesheets --}}
+		@section('styles')
 		@show
 
 		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -34,8 +28,7 @@
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 
-		<!-- Favicons
-		================================================== -->
+		{{-- Favicons @todo update these --}}
 		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ asset('assets/ico/apple-touch-icon-144-precomposed.png') }}">
 		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ asset('assets/ico/apple-touch-icon-114-precomposed.png') }}">
 		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ asset('assets/ico/apple-touch-icon-72-precomposed.png') }}">
@@ -44,10 +37,9 @@
 	</head>
 
 	<body>
-		<!-- Container -->
 		<div class="container">
 			@section('navigation')
-			<!-- Navbar -->
+			{{--
 			<div class="navbar navbar-inverse">
 				<div class="navbar-inner">
 					<div class="container">
@@ -87,27 +79,26 @@
 					</div>
 				</div>
 			</div>
+			--}}
 			@show
 
-			<!-- Notifications -->
+			{{-- Notifications --}}
 			@include('frontend/notifications')
 
-			<!-- Content -->
+			{{-- Content --}}
 			@yield('content')
 
 			<hr />
 
-			<!-- Footer -->
 			<footer>
-				{{-- <p>&copy; Company {{ date('Y') }}</p> --}}
+				{{-- <p>&copy; Git Your Sh*t Together {{ date('Y') }}</p> --}}
 			</footer>
 		</div>
 
-		@section('scripts')
-		<!-- Javascripts
-		================================================== -->
+		{{-- Basic Scripts --}}
 		<script src="{{ asset('assets/js/jquery.1.10.2.min.js') }}"></script>
 		<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+		@section('scripts')
 		@show
 	</body>
 </html>
