@@ -1,12 +1,15 @@
 @extends('layouts.scaffold')
 
+@section('styles')
+	@parent
+	<link href="{{ asset('assets/css/shadows.css') }}" rel="stylesheet">
+@stop
+
 @section('main')
-
 <h1>Todos by Labels</h1>
-
 @foreach ($labels as $label)
 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-4">
-	<div class="panel" style="border-color: #{{{ $label->color }}} !important;">
+	<div class="panel drop-shadow lifted" style="padding: 0 !important; border-color: #{{{ $label->color }}} !important;">
 		<div class="panel-heading" style="background: #{{{ $label->color }}} !important; border-color: #{{{ $label->color }}} !important;">
 			{{{ $label->name }}} <span class="badge">{{{ count($label->todos)  }}}</span>
 		</div>
@@ -23,5 +26,4 @@
 	</div>
 </div>
 @endforeach
-
 @stop

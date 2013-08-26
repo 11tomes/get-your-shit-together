@@ -5,7 +5,7 @@
 		<title>
 			@section('title')
 			@show
-			:: Git Your Sh*t Together
+			| Get Your Sh*t Together
 		</title>
 		<meta name="keywords" content="your, awesome, keywords, here" />
 		<meta name="author" content="Jon Doe" />
@@ -14,11 +14,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		{{-- Basic Stylesheets --}}
 		<link href="{{ asset('assets/css/bootstrap.no-icons.min.css') }}" rel="stylesheet">
-		<link href="{{ asset('assets/css/Handlee.css') }}" rel="stylesheet">
-		<style>
-			body, h1 { font-family: 'Handlee', cursive !important; font-weight: 400; }
-			.handwritten a { color: black !important; }
-		</style>
 		{{-- Additional Stylesheets --}}
 		@section('styles')
 		@show
@@ -97,7 +92,7 @@
 
 		{{-- Basic Scripts --}}
 		<script src="{{ asset('assets/js/jquery.1.10.2.min.js') }}"></script>
-		<script src="{{ asset('assets/js/bootstrap/bootstrap.min.js') }}"></script>
+		<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 		@section('scripts')
 		@show
 	</body>

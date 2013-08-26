@@ -1,17 +1,26 @@
 @extends('layouts.scaffold')
 
+@section('styles')
+	@parent
+	<link href="{{ asset('assets/css/shadows.css') }}" rel="stylesheet">
+@stop
+
 @section('main')
-<h1 class="handwritten">All Todos</h1>
+<div class="row drop-shadow lifted">
+<h1 class="handwritten">{{ $now->toFormattedDateString() }}</h1>
 
 @if ($todos->count())
 <table class="table">
 	<tbody>
 	@foreach ($todos as $todo)
 		<tr>
-			<td{{ " style='border-left: 10px solid #{$todo->priority->color}';" }}>
+			<td>
+				<i class="icon-asterisk" style="color: #{{ $todo->priority->color }};" }}></i>&nbsp;
+			</td>
+			<td>
 			{{ Form::model($todo, array('method' => 'PATCH', 'route' => array('todos.update', $todo->id))) }}
 				{{ Form::hidden('completed_at', ($todo->isDone() ? '' : $now)) }}
-				{{ Form::button('<i class="icon-check' . ($todo->isDone() ? '' : '-empty') . '"></i>', array('type' => 'submit', 'class' => 'btn btn-default')) }}
+				<i class="icon-check{{ $todo->isDone() ? '' : '-empty' }}"></i>
 			{{ Form::close() }}
 			</td>
 			<td>
@@ -27,9 +36,8 @@
 	@endforeach
 		<tr>
 		{{ Form::open(array('route' => 'todos.create', 'method' => 'GET')) }}
-			<td style="border-left: 10px solid #ffffff;">
-				{{ Form::button('<i class="icon-check-empty"></i>', array('type' => 'button', 'disabled' => 'disabled', 'class' => 'btn btn-default')) }}
-			</td>
+			<td></td>
+			<td></td>
 			<td>
 				{{ Form::text('todo', NULL, array('placeholder' => 'Write a todo', 'class' => 'form-control')) }}
 			</td>
@@ -41,7 +49,7 @@
 	</tbody>
 </table>
 @else
-	There are no todos
+	{{ link_to_route('todos.create', 'Do something now!', array(), array('class' => 'btn btn-primary')) }}
 @endif
-
+</div>
 @stop
