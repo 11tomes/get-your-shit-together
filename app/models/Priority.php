@@ -6,13 +6,26 @@ class Priority extends Eloquent {
 	public $timestamps = FALSE;
 
 	public static $rules = array(
-		'priority'	=> 'required',
-		'order'		=> 'required',
-		'color'		=> 'required'
+		'name'		=> 'required|size:1',
+		'order'		=> 'required|integer',
+		'color'		=> 'required|size:6|regex:^(?:[0-9a-fA-F]{3}){1,2}$'
 	);
 
 	public function todos()
 	{
 		return $this->hasMany('Todo');
+	}
+
+	/**
+	 * Return all the priorities ordered by 'order'.
+	 *
+	 * @param array $columns
+	 * @return Illuminate\Database\Eloquent\Collection
+	 */
+	public static function all($columns = array())
+	{
+		return self::select('priorities.*')
+			->orderBy('order')
+			->get();
 	}
 }

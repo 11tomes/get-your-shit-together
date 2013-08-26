@@ -42,6 +42,21 @@ class Todo extends Eloquent {
 	}
 
 	/**
+	 * Return the IDs of the labels this todo belongs to.
+	 *
+	 * @return array
+	 */
+	public function getSelectedLabelsIdsAttribute()
+	{
+		$ids = array();
+		foreach ($this->labels as $label) {
+			$ids[] = $label->id;
+		}
+
+		return $ids;
+	}
+
+	/**
 	 * @todo explain what this does
 	 *
 	 * @param string $to_be_completed_at
