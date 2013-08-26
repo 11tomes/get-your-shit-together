@@ -5,73 +5,48 @@
 Your Profile
 @stop
 
+@section('navigation')
+@show
+
 {{-- Account page content --}}
 @section('account-content')
 <div class="page-header">
 	<h4>Update your Profile</h4>
 </div>
 
-<form method="post" action="" class="form-vertical" autocomplete="off">
-	<!-- CSRF Token -->
+<form method="post" action="" autocomplete="off">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
-
-	<!-- First Name -->
-	<div class="control-group{{ $errors->first('first_name', ' error') }}">
-		<label class="control-label" for="first_name">First Name</label>
-		<div class="controls">
-			<input class="span4" type="text" name="first_name" id="first_name" value="{{ Input::old('first_name', $user->first_name) }}" />
-			{{ $errors->first('first_name', '<span class="help-block">:message</span>') }}
-		</div>
+	<div class="form-group{{ $errors->first('first_name', ' has-error') }}">
+		{{ Form::label('first_name', 'First Name') }}
+		{{ Form::text('first_name', Input::old('first_name', $user->first_name), array('class' => 'form-control')) }}
+		{{ $errors->first('first_name', '<span class="help-block">:message</span>') }}
 	</div>
-
-	<!-- Last Name -->
-	<div class="control-group{{ $errors->first('last_name', ' error') }}">
-		<label class="control-label" for="last_name">Last Name</label>
-		<div class="controls">
-			<input class="span4" type="text" name="last_name" id="last_name" value="{{ Input::old('last_name', $user->last_name) }}" />
-			{{ $errors->first('last_name', '<span class="help-block">:message</span>') }}
-		</div>
+	<div class="form-group{{ $errors->first('last_name', ' has-error') }}">
+		{{ Form::label('last_name', 'Last Name') }}
+		{{ Form::text('last_name', Input::old('last_name', $user->last_name), array('class' => 'form-control')) }}
+		{{ $errors->first('last_name', '<span class="help-block">:message</span>') }}
 	</div>
-
-	<!-- Website URL -->
-	<div class="control-group{{ $errors->first('website', ' error') }}">
-		<label class="control-label" for="website">Website URL</label>
-		<div class="controls">
-			<input class="span4" type="text" name="website" id="website" value="{{ Input::old('website', $user->website) }}" />
-			{{ $errors->first('website', '<span class="help-block">:message</span>') }}
-		</div>
+	<div class="form-group{{ $errors->first('website', ' has-error') }}">
+		{{ Form::label('website', 'Website URL') }}
+		{{ Form::input('url', 'website', Input::old('website', $user->website), array('class' => 'form-control')) }}
+		{{ $errors->first('website', '<span class="help-block">:message</span>') }}
 	</div>
-
-	<!-- Country -->
-	<div class="control-group{{ $errors->first('country', ' error') }}">
-		<label class="control-label" for="country">Country</label>
-		<div class="controls">
-			<input class="span4" type="text" name="country" id="country" value="{{ Input::old('country', $user->country) }}" />
-			{{ $errors->first('country', '<span class="help-block">:message</span>') }}
-		</div>
+	<div class="form-group{{ $errors->first('country', ' has-error') }}">
+		{{ Form::label('country', 'Country') }}
+		{{ Form::text('country', Input::old('country', $user->country), array('class' => 'form-control')) }}
+		{{ $errors->first('country', '<span class="help-block">:message</span>') }}
 	</div>
-
-	<!-- Gravatar Email -->
-	<div class="control-group{{ $errors->first('gravatar', ' error') }}">
-		<label class="control-label" for="gravatar">Gravatar Email <small>(Private)</small></label>
-		<div class="controls">
-			<input class="span4" type="text" name="gravatar" id="gravatar" value="{{ Input::old('gravatar', $user->gravatar) }}" />
-			{{ $errors->first('gravatar', '<span class="help-block">:message</span>') }}
-		</div>
-
-		<p>
+	<div class="form-group{{ $errors->first('gravatar', ' has-error') }}">
+		{{ Form::label('gravatar', 'Gravatar Email (Private)') }}
+		{{ Form::text('gravatar', Input::old('gravatar', $user->gravatar), array('class' => 'form-control')) }}
+		{{ $errors->first('gravatar', '<span class="help-block">:message</span>') }}
+		<label>
 			<img src="//secure.gravatar.com/avatar/{{ md5(strtolower(trim($user->gravatar))) }}" width="30" height="30" />
-			<a href="http://gravatar.com">Change your avatar at Gravatar.com</a>.
-		</p>
+			<a href="http://gravatar.com">Change your avatar at Gravatar.com</a>
+		</label>
 	</div>
-
-	<hr>
-
-	<!-- Form actions -->
-	<div class="control-group">
-		<div class="controls">
-			<button type="submit" class="btn">Update your Profile</button>
-		</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary">Update your Profile</button>
 	</div>
 </form>
 @stop
