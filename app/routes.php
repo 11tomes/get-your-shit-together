@@ -96,6 +96,7 @@ Route::group(array('prefix' => 'auth'), function()
 |
 |
 |
+*/
 
 Route::group(array('prefix' => 'account'), function()
 {
@@ -116,7 +117,6 @@ Route::group(array('prefix' => 'account'), function()
 	Route::post('change-email', 'Controllers\Account\ChangeEmailController@postIndex');
 
 });
-*/
 
 /*
 |--------------------------------------------------------------------------

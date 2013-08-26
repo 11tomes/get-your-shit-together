@@ -73,9 +73,6 @@
 										<b class="caret"></b>
 									</a>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-										@if(Sentry::getUser()->hasAccess('admin'))
-										<li><a href="{{ route('admin') }}"><i class="icon-cog"></i> Administration</a></li>
-										@endif
 										<li{{ (Request::is('account/profile') ? ' class="active"' : '') }}><a href="{{ route('profile') }}"><i class="icon-user"></i> Your profile</a></li>
 										<li class="divider"></li>
 										<li><a href="{{ route('logout') }}"><i class="icon-off"></i> Logout</a></li>
