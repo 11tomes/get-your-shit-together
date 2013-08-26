@@ -6,9 +6,10 @@ class Label extends Eloquent {
 	public $timestamps = FALSE;
 
 	public static $rules = array(
-		'label'		=> 'required',
-		'color'		=> 'required',
-		'parent_id'	=> 'required'
+		'label'		=> 'required|min:1|max:72',
+		'color'		=> 'required|size:6|regex:^(?:[0-9a-fA-F]{3}){1,2}$',
+		'description'	=> 'max:144',
+		'parent_id'	=> 'required|integer' // @todo can either be 0 or exists:labels,id
 	);
 
 	public function todos()
@@ -36,14 +37,14 @@ class Label extends Eloquent {
 	 *
 	 * @return string
 	 */
-	public function getCompleteLabelAttribute()
+	public function getCompleteNameAttribute()
 	{
-		$parent_label = "";
+		$parent_name = "";
 		if ($this->parent) {
-			$parent_label = $this->parent->complete_label;
+			$parent_name = $this->parent->complete_name;
 		}
 
-		return $parent_label ? "{$parent_label}/{$this->label}" : $this->label;
+		return $parent_name ? "{$parent_name}/{$this->name}" : $this->name;
 	}
 
 	/**
@@ -56,7 +57,7 @@ class Label extends Eloquent {
 		$labels = array();
 
 		foreach (self::all() as $label) {
-			$labels[$label->id] = $label->complete_label;
+			$labels[$label->id] = $label->complete_name;
 		}
 
 		return $labels;

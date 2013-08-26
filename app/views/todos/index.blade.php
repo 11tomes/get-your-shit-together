@@ -1,21 +1,7 @@
 @extends('layouts.scaffold')
 
 @section('main')
-<?php // @todo refactor ?>
-<script>
-$(document).ready(function() {
-	var $mark_as_completed = $('#mark_as_completed');
-	var $completed_at = $('#completed_at');
-	$mark_as_completed.click(function () {
-		$completed_at.prop('readonly', $mark_as_completed.is(':checked'));
-
-		$mark_as_completed.parents('form').submit();
-	});
-});
-</script>
 <h1 class="handwritten">All Todos</h1>
-
-<p></p>
 
 @if ($todos->count())
 <table class="table">
@@ -30,7 +16,7 @@ $(document).ready(function() {
 			</td>
 			<td>
 			@foreach ($todo->labels as $label)
-				<span class="label" style="background: #{{{ $label->color }}} !important;">{{{ $label->complete_label }}}</span>
+				<span class="label" style="background: #{{{ $label->color }}};">{{{ $label->complete_name }}}</span>
 			@endforeach
 				<span class="handwritten"<?php echo $todo->isDone() ? ' style="text-decoration: line-through;"' : '' ?>>
 					{{ link_to_route('todos.edit', $todo->todo, array($todo->id)) }}
