@@ -2,11 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Change your Password
-@stop
-
-@section('page_header')
-Change your Password
+Change Your Password
 @stop
 
 {{-- Account page content --}}

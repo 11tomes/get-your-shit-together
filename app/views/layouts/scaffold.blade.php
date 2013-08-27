@@ -1,13 +1,5 @@
 @extends('frontend/layouts/default')
 
-@section('styles')
-	<link href="{{ asset('assets/css/handlee.css') }}" rel='stylesheet' type='text/css'>
-	<style>
-		body, h1 { font-family: 'Handlee', cursive !important; font-weight: 400; }
-		.handwritten a { color: black !important; }
-	</style>
-@stop
-
 @section('content')
 @if (Session::has('alert'))
 	<?php list($type, $message) = Session::get('alert'); ?>

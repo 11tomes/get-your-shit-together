@@ -5,10 +5,6 @@
 Your Profile
 @stop
 
-@section('page_header')
-Your Profile
-@stop
-
 {{-- Account page content --}}
 @section('account-content')
 <form method="post" action="" autocomplete="off">

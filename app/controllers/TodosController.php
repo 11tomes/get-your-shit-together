@@ -34,16 +34,39 @@ class TodosController extends BaseController {
 	}
 
 	/**
-	 * Display the todos grouped by label
+	 * Display the todos grouped by labels
 	 *
 	 * @return Response
 	 */
 	public function labels()
 	{
-		// @todo refactor, only include labels with todos?
-		$labels = Label::all();
+		$labels = $this->labels;
 
 		return View::make('todos.labels', compact('labels'));
+	}
+
+	/**
+	 * Display the todos grouped by priorities
+	 *
+	 * @return Response
+	 */
+	public function priorities()
+	{
+		$priorities = $this->priorities;
+
+		return View::make('todos.priorities', compact('priorities'));
+	}
+
+	/**
+	 * Display the todos grouped and ordered by completion date
+	 *
+	 * @return Response
+	 */
+	public function agenda()
+	{
+		$completion_dates = Todo::getCompletionDates();
+
+		return View::make('todos.agenda', compact('completion_dates'));
 	}
 
 	/**
@@ -71,7 +94,7 @@ class TodosController extends BaseController {
 
 		$todos = array(0 => '--At the top of selected priority--');
 		foreach ($this->todo->all() as $todo) {
-			$todos[$todo->id] = $todo->todo;
+			$todos['--Place after--'][$todo->id] = $todo->todo;
 		}
 
 		$todo = Input::get('todo') ?: '';
@@ -126,7 +149,7 @@ class TodosController extends BaseController {
 				continue;
 			}
 
-			$todos[$todo->id] = $todo->todo;
+			$todos['--Place after--'][$todo->id] = $todo->todo;
 		}
 
 		// @todo: static call

@@ -106,7 +106,7 @@ class PrioritiesController extends BaseController {
 			$priority = $this->priority->find($id);
 			$priority->update($input);
 
-			return Redirect::route('settings.priorities.show', $id);
+			return Redirect::route('settings.priorities.index');
 		}
 
 		return Redirect::route('settings.priorities.edit', $id)

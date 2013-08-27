@@ -143,6 +143,40 @@ class Todo extends Eloquent {
 	}
 
 	/**
+	 * Return all the dates with todos that need to be completed.
+	 *
+	 * @return array
+	  */
+	public static function getCompletionDates()
+	{
+		return self::select(DB::raw('date(to_be_completed_at) AS to_be_completed_at'))
+			->distinct()
+			->orderBy('to_be_completed_at')
+			->get();
+	}
+
+	/**
+	 * Return all todos that needs to be completed at a given date
+	 *
+	 * @param string $completion_date
+	 * @return array
+	 */
+	public static function findByCompletionDate($completion_date)
+	{
+		if ( ! $completion_date) {
+			$completion_date = NULL;
+		}
+		else if ($completion_date instanceOf Carbon) {
+			$completion_date = $completion_date->toDateString();
+		}
+
+		return self::select('todos.*')
+			->where(DB::raw('to_be_completed_at::date'), '=', $completion_date)
+			->orderBy('to_be_completed_at')
+			->get();
+	}
+
+	/**
 	 * Return all todos ordered by priority
 	 *
 	 * @return array @todo collection

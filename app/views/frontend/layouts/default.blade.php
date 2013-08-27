@@ -15,6 +15,11 @@
 	{{-- Basic Stylesheets --}}
 	<link href="{{ asset('assets/css/bootstrap.no-icons.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/css/handlee.css') }}" rel='stylesheet' type='text/css'>
+	<style>
+		body, h1 { font-family: 'Handlee', cursive !important; font-weight: 400; }
+		.handwritten a { color: black !important; }
+	</style>
 	{{-- Additional Stylesheets --}}
 	@section('styles')
 	@show
@@ -36,19 +41,19 @@
 		@section('navigation')
 		<nav role="navigation" class="navbar navbar-default">
 			<div class="navbar-header">
-				<button data-target=".navbar-ex2-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+				<button data-target=".navbar-ex1-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
 				<a href="#" class="navbar-brand">
-				@section('page_header')
+				@section('title')
 					Get Your Sh*t Together
 				@show
 				</a>
 			</div>
-			<div class="collapse navbar-collapse navbar-ex2-collapse navbar-right">
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				@include('frontend/navigation')
 			</div>
 		</nav>
@@ -60,10 +65,8 @@
 		{{-- Content --}}
 		@yield('content')
 
-		<hr />
-
 		<footer>
-			{{-- <p>&copy; Git Your Sh*t Together {{ date('Y') }}</p> --}}
+			{{-- <p>&copy; Get Your Sh*t Together {{ date('Y') }}</p> --}}
 		</footer>
 	</div>
 

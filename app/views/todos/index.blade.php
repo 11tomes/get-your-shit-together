@@ -5,20 +5,13 @@
 	<link href="{{ asset('assets/css/shadows.css') }}" rel="stylesheet">
 @stop
 
-@section('navigation')
+@section('title')
+	View: Todo List
 @stop
 
 @section('main')
 <div class="row drop-shadow lifted">
-<div class="col-md-9">
-	<h1 class="pull-left handwritten">{{ $now->toFormattedDateString() }}</h1>
-</div>
-<div class="col-md-3">
-	<div class="pull-right">
-		@include('frontend/navigation')
-	</div>
-</div>
-
+<h1 class="handwritten">{{ $now->toFormattedDateString() }}</h1>
 @if ($todos->count())
 <table class="table">
 	<tbody>
@@ -61,5 +54,5 @@
 @else
 	{{ link_to_route('todos.create', 'Do something now!', array(), array('class' => 'btn btn-primary')) }}
 @endif
-</div>
+</div> {{-- .row --}}
 @stop
