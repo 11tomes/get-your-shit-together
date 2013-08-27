@@ -11,12 +11,12 @@
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('notes', 'Notes') }}
-		{{ Form::textarea('notes', NULL, array('class' => 'form-control')) }}
+		{{ Form::label('notes', 'Notes (not required)') }}
+		{{ Form::textarea('notes', NULL, array('class' => 'form-control', 'rows' => 3)) }}
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('to_be_completed_at', 'To Be Completed At') }}
+		{{ Form::label('to_be_completed_at', 'To Be Completed At (not required)') }}
 		{{ Form::text('to_be_completed_at', NULL, array('class' => 'form-control')) }}
 	</div>
 
@@ -26,8 +26,8 @@
 	</div>
 
 	<div class="form-group">
-		{{ Form::label('order', 'Order') }}
-		{{ Form::input('number', 'order', NULL, array('class' => 'form-control')) }}
+		{{ Form::label('order', 'Place After') }}
+		{{ Form::select('order', $todos, NULL, array('class' => 'form-control')) }}
 	</div>
 
 	<div class="form-group">

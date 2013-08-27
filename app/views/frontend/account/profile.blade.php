@@ -5,15 +5,12 @@
 Your Profile
 @stop
 
-@section('navigation')
-@show
+@section('page_header')
+Your Profile
+@stop
 
 {{-- Account page content --}}
 @section('account-content')
-<div class="page-header">
-	<h4>Update your Profile</h4>
-</div>
-
 <form method="post" action="" autocomplete="off">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 	<div class="form-group{{ $errors->first('first_name', ' has-error') }}">

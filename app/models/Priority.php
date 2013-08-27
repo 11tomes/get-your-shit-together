@@ -11,6 +11,22 @@ class Priority extends Eloquent {
 		'color'		=> 'required|size:6|regex:^(?:[0-9a-fA-F]{3}){1,2}$'
 	);
 
+	/**
+	 * Returns an array of $id => $name
+	 *
+	 * @return array
+	 */
+	public static function asOptionsArray()
+	{
+		$priorities = array();
+
+		foreach (self::all() as $priority) {
+			$priorities[$priority->id] = $priority->name;
+		}
+
+		return $priorities;
+	}
+
 	public function todos()
 	{
 		return $this->hasMany('Todo');

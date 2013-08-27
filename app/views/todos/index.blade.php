@@ -5,9 +5,19 @@
 	<link href="{{ asset('assets/css/shadows.css') }}" rel="stylesheet">
 @stop
 
+@section('navigation')
+@stop
+
 @section('main')
 <div class="row drop-shadow lifted">
-<h1 class="handwritten">{{ $now->toFormattedDateString() }}</h1>
+<div class="col-md-9">
+	<h1 class="pull-left handwritten">{{ $now->toFormattedDateString() }}</h1>
+</div>
+<div class="col-md-3">
+	<div class="pull-right">
+		@include('frontend/navigation')
+	</div>
+</div>
 
 @if ($todos->count())
 <table class="table">
@@ -20,7 +30,7 @@
 			<td>
 			{{ Form::model($todo, array('method' => 'PATCH', 'route' => array('todos.update', $todo->id))) }}
 				{{ Form::hidden('completed_at', ($todo->isDone() ? '' : $now)) }}
-				<i class="icon-check{{ $todo->isDone() ? '' : '-empty' }}"></i>
+				<i class="icon-check{{ $todo->isDone() ? '' : '-empty' }}" onclick="$(this).parents('form').submit();" style="cursor: pointer;"></i>
 			{{ Form::close() }}
 			</td>
 			<td>

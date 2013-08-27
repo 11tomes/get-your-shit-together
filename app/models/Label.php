@@ -6,7 +6,7 @@ class Label extends Eloquent {
 	public $timestamps = FALSE;
 
 	public static $rules = array(
-		'label'		=> 'required|min:1|max:72',
+		'label'		=> 'required|max:72',
 		'color'		=> 'required|size:6|regex:^(?:[0-9a-fA-F]{3}){1,2}$',
 		'description'	=> 'max:144',
 		'parent_id'	=> 'required|integer' // @todo can either be 0 or exists:labels,id

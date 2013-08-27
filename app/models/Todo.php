@@ -10,9 +10,10 @@ class Todo extends Eloquent {
 	public $timestamps = TRUE;
 
 	public static $rules = array(
-		'todo'		=> 'required',
-		'priority_id'	=> 'required',
-		'order'		=> 'required'
+		'todo'		=> 'required|max:144',
+		'notes'		=> 'max:144',
+		'order'		=> 'required|integer',
+		'priority_id'	=> 'required|integer',
 	);
 
 	/**

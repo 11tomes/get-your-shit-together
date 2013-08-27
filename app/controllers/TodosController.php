@@ -67,10 +67,11 @@ class TodosController extends BaseController {
 	 */
 	public function create()
 	{
-		// @todo: duplicate code, where will we put this?
-		$priorities = array();
-		foreach ($this->priorities as $priority) {
-			$priorities[$priority->id] = $priority->priority;
+		$priorities = Priority::asOptionsArray();
+
+		$todos = array(0 => '--At the top of selected priority--');
+		foreach ($this->todo->all() as $todo) {
+			$todos[$todo->id] = $todo->todo;
 		}
 
 		$todo = Input::get('todo') ?: '';
@@ -78,7 +79,7 @@ class TodosController extends BaseController {
 		// @todo: static call?
 		$labels = Label::asOptionsArray();
 
-		return View::make('todos.create', compact('priorities', 'labels', 'todo'));
+		return View::make('todos.create', compact('priorities', 'labels', 'todo', 'todos'));
 	}
 
 	/**
@@ -117,9 +118,15 @@ class TodosController extends BaseController {
 	{
 		$todo = $this->todo->find($id);
 
-		$priorities = array();
-		foreach ($this->priorities as $priority) {
-			$priorities[$priority->id] = $priority->priority;
+		$priorities = Priority::asOptionsArray();
+
+		$todos = array(0 => '--At the top of selected priority--');
+		foreach ($this->todo->all() as $todo) {
+			if ($todo->id == $id) {
+				continue;
+			}
+
+			$todos[$todo->id] = $todo->todo;
 		}
 
 		// @todo: static call
@@ -129,7 +136,7 @@ class TodosController extends BaseController {
 			return Redirect::route('todos.index');
 		}
 
-		return View::make('todos.edit', compact('todo', 'priorities', 'labels'));
+		return View::make('todos.edit', compact('todo', 'priorities', 'labels', 'todos'));
 	}
 
 	/**

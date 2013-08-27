@@ -1,8 +1,5 @@
 @extends('frontend/layouts/default')
 
-@section('navigation')
-@show
-
 {{-- Page content --}}
 @section('content')
 <div class="col-md-3">

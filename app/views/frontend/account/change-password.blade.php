@@ -5,12 +5,12 @@
 Change your Password
 @stop
 
+@section('page_header')
+Change your Password
+@stop
+
 {{-- Account page content --}}
 @section('account-content')
-<div class="page-header">
-	<h4>Change your Password</h4>
-</div>
-
 <form method="post" action=""role="form" autocomplete="off">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 	<div class="form-group {{ $errors->has('old_password') ? 'has-error' : '' }} ">

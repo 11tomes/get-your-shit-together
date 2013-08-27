@@ -5,12 +5,12 @@
 Change your Email
 @stop
 
+@section('page_header')
+Change your Email
+@stop
+
 {{-- Account page content --}}
 @section('account-content')
-<div class="page-header">
-	<h4>Change your Email</h4>
-</div>
-
 <form method="post" action="" autocomplete="off" role="form">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
 	<input type="hidden" name="formType" value="change-email" />
