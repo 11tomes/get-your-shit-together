@@ -145,7 +145,7 @@ class Todo extends Eloquent {
 	/**
 	 * Return all the dates with todos that need to be completed.
 	 *
-	 * @return array
+	 * @return Illuminate\Database\Eloquent\Collection
 	  */
 	public static function getCompletionDates()
 	{
@@ -159,7 +159,7 @@ class Todo extends Eloquent {
 	 * Return all todos that needs to be completed at a given date
 	 *
 	 * @param string $completion_date
-	 * @return array
+	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public static function findByCompletionDate($completion_date)
 	{
@@ -179,7 +179,7 @@ class Todo extends Eloquent {
 	/**
 	 * Return all todos ordered by priority
 	 *
-	 * @return array @todo collection
+	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public static function all($columns = array())
 	{

@@ -10,8 +10,17 @@
 @stop
 
 @section('main')
-@foreach ($labels as $label)
+<?php 
+	$rows = 2;
+	$count = count($labels);
+	$grouped_labels = array();
+	for ($i = 0; $i < $rows; $i++) {
+		$grouped_labels[] = $labels->slice($i * $count/$rows, $count/$rows, TRUE);
+	}
+?>
+@foreach ($grouped_labels as $labels)
 <div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-4">
+@foreach ($labels as $label)
 	<div class="panel drop-shadow lifted" style="padding: 0 !important; border-color: #{{{ $label->color }}} !important;">
 		<div class="panel-heading" style="background: #{{{ $label->color }}} !important; border-color: #{{{ $label->color }}} !important;">
 			{{{ $label->name }}}&nbsp;<span class="badge">{{{ count($label->todos)  }}}</span>
@@ -30,6 +39,7 @@
 			</li>
 		</ul>
 	</div>
+@endforeach
 </div>
 @endforeach
 @stop

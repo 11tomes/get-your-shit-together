@@ -6,8 +6,8 @@ class Label extends Eloquent {
 	public $timestamps = FALSE;
 
 	public static $rules = array(
-		'label'		=> 'required|max:72',
-		'color'		=> 'required|size:6|regex:^(?:[0-9a-fA-F]{3}){1,2}$',
+		'name'		=> 'required|max:72',
+		'color'		=> 'required|size:6|regex:/^(?:[0-9a-fA-F]{3}){1,2}$/',
 		'description'	=> 'max:144',
 		'parent_id'	=> 'required|integer' // @todo can either be 0 or exists:labels,id
 	);
@@ -61,5 +61,22 @@ class Label extends Eloquent {
 		}
 
 		return $labels;
+	}
+
+	/**
+	 * Override to return all labels ordered by name.
+	 *
+	 * @param array $columns
+	 * @return Illuminate\Database\Eloquent\Collection
+	 */
+	public static function all($columns = array())
+	{
+		if ( ! $columns) {
+			$columns = 'labels.*';
+		}
+
+		return self::select($columns)
+			->orderBy('name')
+			->get();
 	}
 }
