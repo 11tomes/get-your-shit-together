@@ -11,7 +11,7 @@
 
 @section('main')
 <div class="row drop-shadow lifted">
-<h1 class="handwritten">{{ $now->toFormattedDateString() }}</h1>
+<h4 class="handwritten">{{ $now->toFormattedDateString() }}</h4>
 @if ($todos->count())
 <table class="table">
 	<tbody>
@@ -38,16 +38,12 @@
 		</tr>
 	@endforeach
 		<tr>
-		{{ Form::open(array('route' => 'todos.create', 'method' => 'GET')) }}
 			<td></td>
 			<td></td>
 			<td>
-				{{ Form::text('todo', NULL, array('placeholder' => 'Write a todo', 'class' => 'form-control')) }}
+				@include('todos/add')
 			</td>
-			<td>
-				{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
-			</td>
-		{{ Form::close() }}
+			<td></td>
 		</tr>
 	</tbody>
 </table>

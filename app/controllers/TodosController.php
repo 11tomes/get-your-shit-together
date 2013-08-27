@@ -16,6 +16,8 @@ class TodosController extends BaseController {
 
 	protected $labels;
 
+	protected $redirect_key;
+
 	/**
 	 * Represents the current timestamp
 	 *
@@ -31,6 +33,16 @@ class TodosController extends BaseController {
 		$this->priorities = Priority::all();
 		$this->labels = Label::all();
 		$this->now = Carbon::now();
+
+		$this->redirect_key = 'addRedirect';
+	}
+
+	protected function back()
+	{
+		$redirect = Session::get($this->redirect_key);
+		Session::forget($this->redirect_key);
+
+		return Redirect::to($redirect);
 	}
 
 	/**
@@ -41,6 +53,7 @@ class TodosController extends BaseController {
 	public function labels()
 	{
 		$labels = $this->labels;
+		Session::put($this->redirect_key, Request::url());
 
 		return View::make('todos.labels', compact('labels'));
 	}
@@ -53,6 +66,7 @@ class TodosController extends BaseController {
 	public function priorities()
 	{
 		$priorities = $this->priorities;
+		Session::put($this->redirect_key, Request::url());
 
 		return View::make('todos.priorities', compact('priorities'));
 	}
@@ -65,6 +79,7 @@ class TodosController extends BaseController {
 	public function agenda()
 	{
 		$completion_dates = Todo::getCompletionDates();
+		Session::put($this->redirect_key, Request::url());
 
 		return View::make('todos.agenda', compact('completion_dates'));
 	}
@@ -77,8 +92,9 @@ class TodosController extends BaseController {
 	public function index()
 	{
 		$todos = $this->todo->all();
-
 		$now = $this->now;
+
+		Session::put($this->redirect_key, Request::url());
 
 		return View::make('todos.index', compact('todos', 'now'));
 	}
@@ -116,13 +132,13 @@ class TodosController extends BaseController {
 		$labels_input = Input::get('labels');
 
 		$validation = Validator::make($todo_input, Todo::$rules);
-		if ($validation->passes())
-		{
+		if ($validation->passes()) {
 			$todo = $this->todo->create($todo_input);
 
 			$todo->labels()->sync($labels_input);
 
-			return Redirect::route('todos.index');
+			return $this->back()
+				->with('alert', array('info', 'Added.'));
 		}
 
 		return Redirect::route('todos.create')
@@ -188,7 +204,7 @@ class TodosController extends BaseController {
 
 			$todo->labels()->sync($labels_input);
 
-			return Redirect::route('todos.index')
+			return $this->back()
 				->with('alert', array('info', 'Todo up-to-date.'));
 		}
 

@@ -25,6 +25,9 @@
 				</span>
 			</li>
 		@endforeach
+			<li class="list-group-item">
+				@include('todos/add')
+			</li>
 		</ul>
 	</div>
 </div>
