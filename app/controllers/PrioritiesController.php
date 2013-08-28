@@ -33,7 +33,9 @@ class PrioritiesController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('priorities.create');
+		$colors = Color::all();
+
+		return View::make('priorities.create', compact('colors'));
 	}
 
 	/**
@@ -81,13 +83,13 @@ class PrioritiesController extends BaseController {
 	public function edit($id)
 	{
 		$priority = $this->priority->find($id);
-
-		if (is_null($priority))
-		{
+		if (is_null($priority)) {
 			return Redirect::route('settings.priorities.index');
 		}
 
-		return View::make('priorities.edit', compact('priority'));
+		$colors = Color::all();
+
+		return View::make('priorities.edit', compact('priority', 'colors'));
 	}
 
 	/**

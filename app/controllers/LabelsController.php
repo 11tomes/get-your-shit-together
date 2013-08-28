@@ -73,13 +73,14 @@ class LabelsController extends BaseController {
 		$label = $this->label->find($id);
 		$labels = $this->label->asOptionsArray();
 		unset($labels[$label->id]);
+		$colors = Color::all();
 
 		if (is_null($label))
 		{
 			return Redirect::route('settings.labels.index');
 		}
 
-		return View::make('labels.edit', compact('label', 'labels'));
+		return View::make('labels.edit', compact('label', 'labels', 'colors'));
 	}
 
 	/**

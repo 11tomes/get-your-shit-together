@@ -15,11 +15,11 @@
 		<div class="form-group">
 			{{ Form::label('color', 'Color') }}
 			<div class="btn-group" data-toggle="buttons">
-		@foreach ($colors as $color)
-			<label class="btn btn-primary" style="border-color: #{{ $color }}; background-color: #{{ $color }};">
-				{{ Form::radio('color', $color) }} <i class="icon-check-sign"></i>
-			</label>
-		@endforeach
+			@foreach ($colors as $color)
+				<label class="btn btn-primary" style="border-color: #{{ $color }}; background-color: #{{ $color }};">
+					{{ Form::radio('color', $color) }} <i class="icon-check-sign"></i>
+				</label>
+			@endforeach
 			</div>
 		</div>
 		<div class="form-group">
