@@ -68,6 +68,7 @@ class Label extends Eloquent {
 		foreach (self::all() as $label) {
 			$labels[$label->id] = $label->complete_name;
 		}
+		natsort($labels);
 
 		return $labels;
 	}
