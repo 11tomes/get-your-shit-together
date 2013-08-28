@@ -145,8 +145,8 @@ Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 
 
 
-// Route::group(array('before' => 'admin-auth'), function()
-// {
+Route::group(array('before' => 'admin-auth'), function()
+{
 	Route::resource('settings/labels', 'LabelsController');
 	Route::resource('settings/priorities', 'PrioritiesController');
 	Route::post('todos/add', array('uses' => 'TodosController@add', 'as' => 'todos.add'));
@@ -156,4 +156,4 @@ Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 	//Route::patch('todos/accomplish', array('uses' => 'TodosController@accomplish', 'as' => 'todos.accomplish'));
 	//Route::patch('todos/todo', array('uses' => 'TodosController@todo', 'as' => 'todos.todo'));
 	Route::resource('todos', 'TodosController');
-// });
+});
