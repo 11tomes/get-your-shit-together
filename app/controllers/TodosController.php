@@ -35,6 +35,18 @@ class TodosController extends BaseController {
 		$this->now = Carbon::now();
 
 		$this->redirect_key = 'addRedirect';
+
+		// @todo refactor this
+		Validator::extend('datetime', function($attribute, $value, $parameters) {
+			try {
+				// @todo use laravel tz
+				Carbon::parse($value, 'America/Vancouver');
+				return TRUE;
+			}
+			catch (\Exception $e) {
+				return FALSE;
+			}
+		});
 	}
 
 	protected function back()
@@ -139,11 +151,12 @@ class TodosController extends BaseController {
 	 */
 	public function store()
 	{
-		$todo_input = array_except(Input::all(), array('_token', 'labels'));
+		$todo_input = array_except(Input::all(), array('_token'));
 		$labels_input = Input::get('labels');
 
 		$validation = Validator::make($todo_input, Todo::$rules);
 		if ($validation->passes()) {
+			unset($todo_input['labels']);
 			$todo = $this->todo->create($todo_input);
 
 			$todo->labels()->sync($labels_input);
@@ -197,8 +210,8 @@ class TodosController extends BaseController {
 	 */
 	public function update($id)
 	{
-		$todo_input = array_except(Input::all(), array('_method', '_token', 'labels'));
-		$labels_input = Input::get('labels'); // @todo add validation to labels
+		$todo_input = array_except(Input::all(), array('_method', '_token'));
+		$labels_input = Input::get('labels');
 
 		// @todo work around for Input::has
 		$completed_at = Input::get('completed_at');
@@ -210,6 +223,8 @@ class TodosController extends BaseController {
 
 		$validation = Validator::make($todo_input, Todo::$rules);
 		if ($validation->passes()) {
+			unset($todo_input['labels']);
+
 			$todo = $this->todo->find($id);
 			$todo->update($todo_input);
 

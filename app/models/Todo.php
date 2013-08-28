@@ -15,6 +15,7 @@ class Todo extends Eloquent {
 		'order'		=> 'required|integer',
 		'priority_id'	=> 'required|integer',
 		'labels'	=> 'required',
+		'to_be_completed_at'	=> 'datetime'
 	);
 
 	/**
@@ -68,6 +69,20 @@ class Todo extends Eloquent {
 	{
 		if ( ! $to_be_completed_at) {
 			$to_be_completed_at = NULL;
+		}
+
+		if (is_string($to_be_completed_at)) {
+			if (strtolower($to_be_completed_at) === 'someday') {
+				$to_be_completed_at = NULL;
+			}
+			else {
+				// @todo timezone please?
+				try {
+					$to_be_completed_at = Carbon::parse($to_be_completed_at, 'America/Vancouver');
+				} catch (\Exception $e) {
+					throw new \Exception("Invalid to_be_completed_at format: {$to_be_completed_at}");
+				}
+			}
 		}
 
 		$this->attributes['to_be_completed_at'] = $to_be_completed_at;

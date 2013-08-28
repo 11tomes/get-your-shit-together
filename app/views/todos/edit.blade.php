@@ -23,7 +23,8 @@
 		</div>
 		<div class="form-group">
 			{{ Form::label('to_be_completed_at', 'To Be Completed At (not required)') }}
-			{{ Form::input('datetime', 'to_be_completed_at', NULL, array('data-format' => 'MM/dd/yyyy HH:mm:ss PP', 'class' => 'form-control')) }}
+			<?php $to_be_completed_at = $todo->to_be_completed_at ? $todo->to_be_completed_at->toDayDateTimeString() : 'someday'; ?>
+			{{ Form::input('datetime', 'to_be_completed_at', $to_be_completed_at, array('data-format' => 'MM/dd/yyyy HH:mm:ss PP', 'class' => 'form-control')) }}
 		</div>
 		<div class="form-group">
 			{{ Form::label('priority_id', 'Priority') }}
