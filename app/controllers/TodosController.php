@@ -180,24 +180,23 @@ class TodosController extends BaseController {
 	public function edit($id)
 	{
 		$todo = $this->todo->find($id);
+		if (is_null($todo)) {
+			return Redirect::route('todos.index');
+		}
 
 		$priorities = Priority::asOptionsArray();
 
 		$todos = array(0 => '--At the top of selected priority--');
-		foreach ($this->todo->all() as $todo) {
-			if ($todo->id == $id) {
+		foreach ($this->todo->all() as $a_todo) {
+			if ($a_todo->id == $id) {
 				continue;
 			}
 
-			$todos['--Place after--'][$todo->id] = $todo->todo;
+			$todos['--Place after--'][$a_todo->id] = $a_todo->todo;
 		}
 
 		// @todo: static call
 		$labels = Label::asOptionsArray();
-
-		if (is_null($todo)) {
-			return Redirect::route('todos.index');
-		}
 
 		return View::make('todos.edit', compact('todo', 'priorities', 'labels', 'todos'));
 	}
