@@ -10,7 +10,7 @@
 	{{ Form::open(array('route' => 'todos.store')) }}
 		<div class="form-group">
 			{{ Form::label('todo', 'Todo') }}
-			{{ Form::text('todo', $todo, array('class' => 'form-control')) }}
+			{{ Form::text('todo', NULL, array('class' => 'form-control')) }}
 		</div>
 		<div class="form-group">
 			{{ Form::label('notes', 'Notes (not required)') }}
@@ -30,7 +30,7 @@
 		</div>
 		<div class="form-group">
 			{{ Form::label('labels[]', 'Labels') }}
-			{{ Form::select('labels[]', $labels, array(), array('multiple', 'class' => 'form-control')) }}
+			{{ Form::select('labels[]', $labels, $selected_labels, array('multiple', 'class' => 'form-control')) }}
 		</div>
 		{{ Form::submit('Add', array('class' => 'btn btn-primary')) }}
 	{{ Form::close() }}

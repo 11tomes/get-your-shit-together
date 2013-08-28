@@ -14,6 +14,7 @@ class Todo extends Eloquent {
 		'notes'		=> 'max:144',
 		'order'		=> 'required|integer',
 		'priority_id'	=> 'required|integer',
+		'labels'	=> 'required',
 	);
 
 	/**
@@ -144,15 +145,23 @@ class Todo extends Eloquent {
 
 	/**
 	 * Return all the dates with todos that need to be completed.
+	 * Returns a collection of Carbon\Carbon.
 	 *
 	 * @return Illuminate\Database\Eloquent\Collection
-	  */
+	 */
 	public static function getCompletionDates()
 	{
-		return self::select(DB::raw('date(to_be_completed_at) AS to_be_completed_at'))
+		$completion_dates = array();
+		$todos = self::select(DB::raw('date(to_be_completed_at) AS to_be_completed_at'))
 			->distinct()
 			->orderBy('to_be_completed_at')
 			->get();
+
+		foreach ($todos as $todo) {
+			$completion_dates[] = $todo->to_be_completed_at;
+		}
+
+		return $completion_dates;
 	}
 
 	/**

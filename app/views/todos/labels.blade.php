@@ -35,7 +35,8 @@
 			</li>
 		@endforeach
 			<li class="list-group-item">
-				@include('todos/add')
+				<?php $extra_html = Form::hidden('labels[]', $label->id); ?>
+				@include('todos/add', compact('extra_html'))
 			</li>
 		</ul>
 	</div>

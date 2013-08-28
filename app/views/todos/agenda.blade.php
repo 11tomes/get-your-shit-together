@@ -11,11 +11,11 @@
 
 @section('main')
 @foreach ($completion_dates as $date)
-<?php $todos = Todo::findByCompletionDate($date->to_be_completed_at); /*highlight_string(var_export($todos, TRUE)); die();*/ ?>
+<?php $todos = Todo::findByCompletionDate($date); /*highlight_string(var_export($todos, TRUE)); die();*/ ?>
 <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-4 col-lg-offset-4">
 	<div class="panel panel-default drop-shadow lifted" style="padding: 0 !important;">
 		<div class="panel-heading">
-			{{{ $date->to_be_completed_at ? $date->to_be_completed_at->toFormattedDateString() : 'Someday' }}}&nbsp;<span class="badge">{{{ count($todos)  }}}</span>
+			{{{ $date ? $date->toFormattedDateString() : 'Someday' }}}&nbsp;<span class="badge">{{{ count($todos)  }}}</span>
 		</div>
 		<ul class="list-group">
 		@foreach ($todos as $todo)
@@ -27,7 +27,8 @@
 			</li>
 		@endforeach
 			<li class="list-group-item">
-				@include('todos/add')
+				<?php $extra_html = Form::hidden('to_be_completed_at', $date); ?>
+				@include('todos/add', compact('extra_html'))
 			</li>
 		</ul>
 	</div>

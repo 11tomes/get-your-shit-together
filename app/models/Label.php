@@ -17,6 +17,15 @@ class Label extends Eloquent {
 		return $this->belongsToMany('Todo');
 	}
 
+	public function setParentIdAttribute($parent_id)
+	{
+		if ($parent_id == $this->id) {
+			$parent_id = 0;
+		}
+
+		$this->attributes['parent_id'] = $parent_id;
+	}
+
 	/**
 	 * Return the parent label or NULL if it doesn't have.
 	 *
@@ -40,8 +49,8 @@ class Label extends Eloquent {
 	public function getCompleteNameAttribute()
 	{
 		$parent_name = "";
-		if ($this->parent) {
-			$parent_name = $this->parent->complete_name;
+		if ($parent = $this->parent) {
+			$parent_name = $parent->complete_name;
 		}
 
 		return $parent_name ? "{$parent_name}/{$this->name}" : $this->name;

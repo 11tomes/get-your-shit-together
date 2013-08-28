@@ -71,6 +71,7 @@ class LabelsController extends BaseController {
 	{
 		$label = $this->label->find($id);
 		$labels = $this->label->asOptionsArray();
+		unset($labels[$label->id]);
 
 		if (is_null($label))
 		{

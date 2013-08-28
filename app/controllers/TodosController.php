@@ -113,12 +113,23 @@ class TodosController extends BaseController {
 			$todos['--Place after--'][$todo->id] = $todo->todo;
 		}
 
-		$todo = Input::get('todo') ?: '';
+		$selected_labels = Input::old('labels') ?: array();
 
 		// @todo: static call?
 		$labels = Label::asOptionsArray();
 
-		return View::make('todos.create', compact('priorities', 'labels', 'todo', 'todos'));
+		return View::make('todos.create', compact('priorities', 'labels', 'todos', 'selected_labels'));
+	}
+
+	/**
+	 * Redirect to create with old input.
+	 *
+	 * @return Response
+	 */
+	public function add()
+	{
+		return Redirect::route('todos.create')
+			->withInput();
 	}
 
 	/**

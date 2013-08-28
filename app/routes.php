@@ -149,6 +149,7 @@ Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 // {
 	Route::resource('settings/labels', 'LabelsController');
 	Route::resource('settings/priorities', 'PrioritiesController');
+	Route::post('todos/add', array('uses' => 'TodosController@add', 'as' => 'todos.add'));
 	Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
 	Route::get('todos/priorities', array('uses' => 'TodosController@priorities', 'as' => 'todos.priorities'));
 	Route::get('todos/agenda', array('uses' => 'TodosController@agenda', 'as' => 'todos.agenda'));

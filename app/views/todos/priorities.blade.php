@@ -14,7 +14,7 @@
 <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-4 col-lg-offset-4">
 	<div class="panel drop-shadow lifted" style="padding: 0 !important; border-color: #{{{ $priority->color }}} !important;">
 		<div class="panel-heading" style="background: #{{{ $priority->color }}} !important; border-color: #{{{ $priority->color }}} !important;">
-			{{{ $priority->name }}}&bsnp;<span class="badge">{{{ count($priority->todos)  }}}</span>
+			{{{ $priority->name }}}&nbsp;<span class="badge">{{{ count($priority->todos)  }}}</span>
 		</div>
 		<ul class="list-group">
 		@foreach ($priority->todos as $todo)
@@ -26,7 +26,8 @@
 			</li>
 		@endforeach
 			<li class="list-group-item">
-				@include('todos/add')
+				<?php $extra_html = Form::hidden('priority_id', $priority->id); ?>
+				@include('todos/add', compact('extra_html'))
 			</li>
 		</ul>
 	</div>

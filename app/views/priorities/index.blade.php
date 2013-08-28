@@ -1,13 +1,11 @@
 @extends('layouts.scaffold')
 
-@section('main')
-
 @section('title')
-Labels
-
+Priorities
 @stop
-<p>{{ link_to_route('settings.priorities.create', 'Add new priority') }}</p>
 
+@section('main')
+<p>{{ link_to_route('settings.priorities.create', 'Add new priority') }}</p>
 @if ($priorities->count())
 	<table class="table table-striped table-bordered">
 		<thead>
@@ -41,5 +39,4 @@ Labels
 @else
 	There are no priorities
 @endif
-
 @stop
