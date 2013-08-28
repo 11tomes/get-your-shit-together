@@ -34,8 +34,9 @@ class LabelsController extends BaseController {
 	public function create()
 	{
 		$labels = $this->label->asOptionsArray();
+		$colors = Color::all();
 
-		return View::make('labels.create', compact('labels'));
+		return View::make('labels.create', compact('labels', 'colors'));
 	}
 
 	/**

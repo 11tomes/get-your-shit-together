@@ -17,7 +17,7 @@
 	<link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('assets/css/handlee.css') }}" rel='stylesheet' type='text/css'>
 	<style>
-		body, h1 { font-family: 'Handlee', cursive !important; font-weight: 400; }
+		body, h1, h2, h3, h4 { font-family: 'Handlee', cursive !important; font-weight: 400; }
 		.handwritten a { color: black !important; }
 	</style>
 	{{-- Additional Stylesheets --}}

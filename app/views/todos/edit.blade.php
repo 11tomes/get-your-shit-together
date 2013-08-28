@@ -35,6 +35,10 @@
 			{{ Form::select('order', $todos, NULL, array('class' => 'form-control')) }}
 		</div>
 		<div class="form-group">
+			{{ Form::label('completed_at', 'Completed At') }}
+			<p class="form-control-static">{{ $todo->getDaysTillCompletionDate() }}</p>
+		</div>
+		<div class="form-group">
 			{{ Form::label('labels[]', 'Labels') }}
 			{{ Form::select('labels[]', $labels, $todo->selected_labels_ids, array('multiple', 'class' => 'form-control')) }}
 		</div>

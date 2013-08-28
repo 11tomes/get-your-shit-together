@@ -10,16 +10,18 @@
 @stop
 
 @section('main')
-<div class="row drop-shadow lifted">
-<h4 class="handwritten">{{ $now->toFormattedDateString() }}</h4>
 @if ($todos->count())
-<table class="table">
+<table class="table drop-shadow lifted">
+	<thead>
+		<tr>
+			<th colspan="3">
+<h4 class="handwritten">{{ $now->toFormattedDateString() }}</h4>
+			</th>
+		</tr>
+	</thead>
 	<tbody>
 	@foreach ($todos as $todo)
 		<tr>
-			<td>
-				<i class="icon-asterisk" style="color: #{{ $todo->priority->color }};" }}></i>&nbsp;
-			</td>
 			<td>
 			{{ Form::model($todo, array('method' => 'PATCH', 'route' => array('todos.update', $todo->id))) }}
 				{{ Form::hidden('completed_at', ($todo->isDone() ? '' : $now)) }}
@@ -28,6 +30,7 @@
 			</td>
 			<td>
 			@foreach ($todo->labels as $label)
+				<i class="icon-asterisk" style="color: #{{ $todo->priority->color }};" }}></i>&nbsp;
 				<span class="label" style="background: #{{{ $label->color }}};">{{{ $label->complete_name }}}</span>
 			@endforeach
 				<span class="handwritten"<?php echo $todo->isDone() ? ' style="text-decoration: line-through;"' : '' ?>>
@@ -39,7 +42,6 @@
 	@endforeach
 		<tr>
 			<td></td>
-			<td></td>
 			<td>
 				@include('todos/add')
 			</td>
@@ -50,5 +52,4 @@
 @else
 	{{ link_to_route('todos.create', 'Do something now!', array(), array('class' => 'btn btn-primary')) }}
 @endif
-</div> {{-- .row --}}
 @stop
