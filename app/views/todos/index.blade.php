@@ -29,8 +29,8 @@
 			{{ Form::close() }}
 			</td>
 			<td>
-			@foreach ($todo->labels as $label)
 				<i class="icon-asterisk" style="color: #{{ $todo->priority->color }};" }}></i>&nbsp;
+			@foreach ($todo->labels as $label)
 				<span class="label" style="background: #{{{ $label->color }}};">{{{ $label->complete_name }}}</span>
 			@endforeach
 				<span class="handwritten"<?php echo $todo->isDone() ? ' style="text-decoration: line-through;"' : '' ?>>
