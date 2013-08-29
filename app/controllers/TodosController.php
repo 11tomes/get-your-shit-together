@@ -306,8 +306,8 @@ class TodosController extends BaseController {
 	{
 		$this->todo->find($id)->delete();
 
-		return Redirect::route('todos.index')
-			->with('alert', array('success', 'One todo deleted.'));
+		return $this->back()
+			->with('alert', array('info', 'Todo discarded.'));
 	}
 
 }
