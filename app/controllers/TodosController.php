@@ -11,11 +11,26 @@ class TodosController extends BaseController {
 	 */
 	protected $todo;
 
-	// @todo add doc
+	/**
+	 * List of priorities
+	 *
+	 * @var Illuminate\Database\Eloquent\Collection
+	 */
 	protected $priorities;
 
+	/**
+	 * List of labels
+	 *
+	 * @var Illuminate\Database\Eloquent\Collection
+	 */
 	protected $labels;
 
+	/**
+	 * The string to use as key when setting the redirect value
+	 * in Session
+	 *
+	 * @var string
+	 */
 	protected $redirect_key;
 
 	/**
@@ -25,14 +40,22 @@ class TodosController extends BaseController {
 	 */
 	protected $now;
 
-	// @todo: who passes $todo?
-	public function __construct(Todo $todo)
+	/**
+	 *
+	 * @param     Todo $todo
+	 * @param Priority $priority
+	 * @param    Label $label
+	 * @param   Carbon $carbon
+	 */
+	public function __construct(Todo $todo, Priority $priority, Label $label, Carbon $carbon)
 	{
 		$this->todo = $todo;
-		// @todo: refactor
-		$this->priorities = Priority::all();
-		$this->labels = Label::all();
-		$this->now = Carbon::now();
+		$this->priority = $priority;
+		$this->label = $label;
+
+		$this->priorities = $priority->all();
+		$this->labels = $label->all();
+		$this->now = $carbon->now();
 
 		$this->redirect_key = 'addRedirect';
 
@@ -118,7 +141,7 @@ class TodosController extends BaseController {
 	 */
 	public function create()
 	{
-		$priorities = Priority::asOptionsArray();
+		$priorities = $this->priority->asOptionsArray();
 
 		$todos = array(0 => '--At the top of selected priority--');
 		foreach ($this->todo->all() as $todo) {
@@ -127,8 +150,7 @@ class TodosController extends BaseController {
 
 		$selected_labels = Input::old('labels') ?: array();
 
-		// @todo: static call?
-		$labels = Label::asOptionsArray();
+		$labels = $this->label->asOptionsArray();
 
 		return View::make('todos.create', compact('priorities', 'labels', 'todos', 'selected_labels'));
 	}
@@ -184,7 +206,7 @@ class TodosController extends BaseController {
 			return Redirect::route('todos.index');
 		}
 
-		$priorities = Priority::asOptionsArray();
+		$priorities = $this->priority->asOptionsArray();
 
 		$todos = array(0 => '--At the top of selected priority--');
 		foreach ($this->todo->all() as $a_todo) {
@@ -195,8 +217,7 @@ class TodosController extends BaseController {
 			$todos['--Place after--'][$a_todo->id] = $a_todo->todo;
 		}
 
-		// @todo: static call
-		$labels = Label::asOptionsArray();
+		$labels = $this->label->asOptionsArray();
 
 		return View::make('todos.edit', compact('todo', 'priorities', 'labels', 'todos'));
 	}
@@ -288,7 +309,7 @@ class TodosController extends BaseController {
 	{
 		$todo = $this->todo->find($id);
 		$input = array(
-			'completed_at' => Carbon::now()
+			'completed_at' => $this->carbon->now()
 		);
 		$todo->update($input);
 
