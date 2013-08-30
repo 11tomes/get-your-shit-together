@@ -10,13 +10,34 @@ class Todo extends Eloquent {
 	public $timestamps = TRUE;
 
 	public static $rules = array(
-		'todo'		=> 'required|max:144',
-		'notes'		=> 'max:144',
-		'order'		=> 'required|integer',
-		'priority_id'	=> 'required|integer',
-		'labels'	=> 'required',
-		'to_be_completed_at'	=> 'datetime'
+		'todo'			=> 'required|max:144',
+		'notes'			=> 'max:144',
+		'order'			=> 'required|integer',
+		'priority_id'		=> 'required|integer',
+		'labels'		=> 'required',
+		'to_be_completed_at'	=> 'datetime',
+		'user_id'		=> 'exists:users,id'
 	);
+
+	/**
+	 * One (user) is to many (todos) relationship
+	 *
+	 * @var Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function user()
+	{
+		return $this->belongsTo('User');
+	}
+
+	public function labels()
+	{
+		return $this->belongsToMany('Label');
+	}
+
+	public function priority()
+	{
+		return $this->belongsTo('Priority');
+	}
 
 	/**
 	 *
@@ -104,16 +125,6 @@ class Todo extends Eloquent {
 		$this->attributes['completed_at'] = $completed_at;
 
 		return $this;
-	}
-
-	public function labels()
-	{
-		return $this->belongsToMany('Label');
-	}
-
-	public function priority()
-	{
-		return $this->belongsTo('Priority');
 	}
 
 	/**

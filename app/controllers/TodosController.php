@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class TodosController extends BaseController {
+class TodosController extends AuthorizedController {
 
 	/**
 	 * Todo Repository
@@ -49,6 +49,8 @@ class TodosController extends BaseController {
 	 */
 	public function __construct(Todo $todo, Priority $priority, Label $label, Carbon $carbon)
 	{
+		parent::__construct();
+
 		$this->todo = $todo;
 		$this->priority = $priority;
 		$this->label = $label;
@@ -72,6 +74,12 @@ class TodosController extends BaseController {
 		});
 	}
 
+	/**
+	 * This redirects to the previous page set by setting the value of
+	 * $this->redirect_key in session
+	 *
+	 * @return Illuminate\Http\RedirectResponse 
+	 */
 	protected function back()
 	{
 		$redirect = Session::get($this->redirect_key);
@@ -126,7 +134,7 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
-		$todos = $this->todo->all();
+		$todos = $this->user->todos;
 		$now = $this->now;
 
 		Session::put($this->redirect_key, Request::url());
@@ -174,6 +182,7 @@ class TodosController extends BaseController {
 	public function store()
 	{
 		$todo_input = array_except(Input::all(), array('_token'));
+		$todo_input['user_id'] = $this->user->id;
 		$labels_input = Input::get('labels');
 
 		$validation = Validator::make($todo_input, Todo::$rules);
@@ -231,6 +240,7 @@ class TodosController extends BaseController {
 	public function update($id)
 	{
 		$todo_input = array_except(Input::all(), array('_method', '_token'));
+		$todo_input['user_id'] = $this->user->id;
 		$labels_input = Input::get('labels');
 
 		// @todo work around for Input::has

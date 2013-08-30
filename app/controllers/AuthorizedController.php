@@ -10,6 +10,13 @@ class AuthorizedController extends BaseController {
 	protected $whitelist = array();
 
 	/**
+	 * Current logged in user
+	 *
+	 * @var User
+	 */
+	protected $user;
+
+	/**
 	 * Initializer.
 	 *
 	 * @return void
@@ -18,8 +25,8 @@ class AuthorizedController extends BaseController {
 	{
 		// Apply the auth filter
 		$this->beforeFilter('auth', array('except' => $this->whitelist));
+		$this->user = Sentry::getUser();
 
-		// Call parent
 		parent::__construct();
 	}
 

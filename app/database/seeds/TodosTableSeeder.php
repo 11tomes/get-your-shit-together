@@ -16,7 +16,8 @@ class TodosTableSeeder extends Seeder {
 				'created_at' => '2013-07-01',
 				'updated_at' => '2013-07-01',
 				'order'	=> 1,
-				'priority_id' => 1
+				'priority_id' => 1,
+				'user_id' => 1
 			),
 			array(
 				'todo' => 'this is done yesterday',
@@ -26,7 +27,8 @@ class TodosTableSeeder extends Seeder {
 				'created_at' => '2013-07-01',
 				'updated_at' => '2013-07-01',
 				'order'	=> 1,
-				'priority_id' => 1
+				'priority_id' => 1,
+				'user_id' => 1
 			),
 			array(
 				'todo' => 'this is done a month ago',
@@ -36,7 +38,8 @@ class TodosTableSeeder extends Seeder {
 				'created_at' => '2013-07-01',
 				'updated_at' => '2013-07-01',
 				'order'	=> 1,
-				'priority_id' => 1
+				'priority_id' => 1,
+				'user_id' => 1
 			),
 			array(
 				'todo' => 'to be done someday',
@@ -46,7 +49,8 @@ class TodosTableSeeder extends Seeder {
 				'created_at' => '2013-07-01',
 				'updated_at' => '2013-07-01',
 				'order'	=> 1,
-				'priority_id' => 1
+				'priority_id' => 1,
+				'user_id' => 1
 			)
 		);
 
