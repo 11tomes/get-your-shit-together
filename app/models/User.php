@@ -12,13 +12,14 @@ class User extends SentryUserModel {
 	protected $softDelete = true;
 
 	/**
-	 * One (user) is to many (todos) relationship
+	 * One (user) is to many (todos) relationship. Default order is by
+	 * completion date
 	 *
 	 * @return Illuminate\Database\Eloquent\Relations\HasMany
 	 */
 	public function todos()
 	{
-		return $this->hasMany('Todo');
+		return $this->hasMany('Todo')->orderBy('to_be_completed_at');
 	}
 
 	/**
