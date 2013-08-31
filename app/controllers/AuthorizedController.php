@@ -23,11 +23,11 @@ class AuthorizedController extends BaseController {
 	 */
 	public function __construct()
 	{
+		parent::__construct();
+
 		// Apply the auth filter
 		$this->beforeFilter('auth', array('except' => $this->whitelist));
 		$this->user = Sentry::getUser();
-
-		parent::__construct();
 	}
 
 }

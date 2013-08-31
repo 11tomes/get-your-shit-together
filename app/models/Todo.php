@@ -3,37 +3,46 @@
 use Carbon\Carbon;
 
 class Todo extends Eloquent {
+
 	protected $guarded = array();
-
 	protected $softDelete = TRUE;
-
 	public $timestamps = TRUE;
 
-	public static $rules = array(
+	public $rules = array(
 		'todo'			=> 'required|max:144',
 		'notes'			=> 'max:144',
 		'order'			=> 'required|integer',
-		'priority_id'		=> 'required|integer',
-		'labels'		=> 'required',
+		'priority_id'		=> 'required|exists:priorities,id',
+		'labels'		=> 'required|exists_array:labels,id',
 		'to_be_completed_at'	=> 'datetime',
-		'user_id'		=> 'exists:users,id'
+		'user_id'		=> 'required|exists:users,id'
 	);
 
 	/**
-	 * One (user) is to many (todos) relationship
+	 * One (user) has many (todos) relationship
 	 *
-	 * @var Illuminate\Database\Eloquent\Relations\BelongsTo
+	 * @return Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function user()
 	{
 		return $this->belongsTo('User');
 	}
 
+	/**
+	 * One (todo) has many (labels) relationship
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
 	public function labels()
 	{
-		return $this->belongsToMany('Label');
+		return $this->belongsToMany('Label')->orderBy('name');
 	}
 
+	/**
+	 * One (todo) has one (priority) relationship
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
 	public function priority()
 	{
 		return $this->belongsTo('Priority');
@@ -41,7 +50,7 @@ class Todo extends Eloquent {
 
 	/**
 	 *
-	 * @return DateTime | NULL
+	 * @return Carbon | NULL
 	 */
 	public function getToBeCompletedAtAttribute()
 	{
@@ -54,7 +63,7 @@ class Todo extends Eloquent {
 
 	/**
 	 *
-	 * @return DateTime | NULL
+	 * @return Carbon | NULL
 	 */
 	public function getCompletedAtAttribute()
 	{
@@ -81,9 +90,20 @@ class Todo extends Eloquent {
 	}
 
 	/**
-	 * @todo explain what this does
+	 * Return the static property $rules
 	 *
-	 * @param string $to_be_completed_at
+	 * @return array
+	 */
+	public function getRulesAttribute()
+	{
+		return self::$rules;
+	}
+
+	/**
+	 * Value can be a NULL which means this todo has no completion date.
+	 * Formats supported by DateTime are accepted.
+	 *
+	 * @param  string $to_be_completed_at
 	 * @return self
 	 */
 	public function setToBeCompletedAtAttribute($to_be_completed_at)
@@ -91,18 +111,12 @@ class Todo extends Eloquent {
 		if ( ! $to_be_completed_at) {
 			$to_be_completed_at = NULL;
 		}
-
-		if (is_string($to_be_completed_at)) {
-			if (strtolower($to_be_completed_at) === 'someday') {
-				$to_be_completed_at = NULL;
-			}
-			else {
-				// @todo timezone please?
-				try {
-					$to_be_completed_at = Carbon::parse($to_be_completed_at, 'America/Vancouver');
-				} catch (\Exception $e) {
-					throw new \Exception("Invalid to_be_completed_at format: {$to_be_completed_at}");
-				}
+		else {
+			$tz = Config::get('app.timezone');
+			try {
+				$to_be_completed_at = Carbon::parse($to_be_completed_at, $tz);
+			} catch (Exception $e) {
+				throw new InvalidArgumentException("Invalid to_be_completed_at format: {$to_be_completed_at}");
 			}
 		}
 
@@ -112,14 +126,23 @@ class Todo extends Eloquent {
 	}
 
 	/**
+	 * Same as setToBeCompletedAtAttribute.
 	 *
-	 * @param string $to_be_completed_at
+	 * @param  string $to_be_completed_at
 	 * @return self
 	 */
 	public function setCompletedAtAttribute($completed_at)
 	{
 		if ( ! $completed_at) {
 			$completed_at = NULL;
+		}
+		else {
+			$tz = Config::get('app.timezone');
+			try {
+				$completed_at = Carbon::parse($completed_at, $tz);
+			} catch (Exception $e) {
+				throw new InvalidArgumentException("Invalid completed_at format: {$completed_at}");
+			}
 		}
 
 		$this->attributes['completed_at'] = $completed_at;
@@ -128,16 +151,33 @@ class Todo extends Eloquent {
 	}
 
 	/**
+	 * Override the function to include processing of labels relationship
+	 * if set in the arguments.
+	 *
+	 * @param array $attributes
+	 */
+	public function update(array $attributes = array())
+	{
+		if (isset($attributes['labels'])) {
+			$labels = $attributes['labels'];
+			unset($attributes['labels']);
+
+			$this->labels()->sync($labels);
+		}
+
+		parent::update($attributes);
+	}
+
+	/**
 	 * Return a human readable difference between the current date
-	 * and the completed at date. If completed at date is not set,
-	 * this will return 'someday'.
+	 * and the completion date or NULL when completion date is not set.
 	 *
 	 * @return string
 	 */
 	public function getDaysTillCompletionDate()
 	{
 		if ( ! $this->to_be_completed_at) {
-			return 'someday';
+			return NULL;
 		}
 
 		$now = Carbon::now();
@@ -191,9 +231,10 @@ class Todo extends Eloquent {
 	}
 
 	/**
-	 * Return all todos that needs to be completed at a given date
+	 * Return all todos that needs to be completed at a given date.
+	 * NULL value is accepted for todos that do not have a completion date.
 	 *
-	 * @param string $completion_date
+	 * @param  Carbon $completion_date
 	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public static function findByCompletionDate($completion_date)

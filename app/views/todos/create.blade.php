@@ -8,6 +8,7 @@
 <div class="row">
 <div class="col-xs-12 col-ms-12 col-md-8 col-md-offset-2">
 	{{ Form::open(array('route' => 'todos.store')) }}
+		{{ Form::hidden('user_id', $user->id) }}
 		<div class="form-group">
 			{{ Form::label('todo', 'Todo') }}
 			{{ Form::text('todo', NULL, array('class' => 'form-control')) }}

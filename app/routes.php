@@ -143,17 +143,16 @@ Route::post('blog/{postSlug}', 'BlogController@postView');
 */
 Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
 
-
-
-Route::group(array('before' => 'admin-auth'), function()
+Route::group(array('prefix' => 'settings'), function()
 {
-	Route::resource('settings/labels', 'LabelsController');
-	Route::resource('settings/priorities', 'PrioritiesController');
-	Route::post('todos/add', array('uses' => 'TodosController@add', 'as' => 'todos.add'));
-	Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
-	Route::get('todos/priorities', array('uses' => 'TodosController@priorities', 'as' => 'todos.priorities'));
-	Route::get('todos/agenda', array('uses' => 'TodosController@agenda', 'as' => 'todos.agenda'));
-	//Route::patch('todos/accomplish', array('uses' => 'TodosController@accomplish', 'as' => 'todos.accomplish'));
-	//Route::patch('todos/todo', array('uses' => 'TodosController@todo', 'as' => 'todos.todo'));
-	Route::resource('todos', 'TodosController');
+	Route::resource('labels', 'LabelsController');
+	Route::resource('priorities', 'PrioritiesController');
 });
+
+Route::post('todos/add', array('uses' => 'TodosController@add', 'as' => 'todos.add'));
+Route::get('todos/labels', array('uses' => 'TodosController@labels', 'as' => 'todos.labels'));
+Route::get('todos/priorities', array('uses' => 'TodosController@priorities', 'as' => 'todos.priorities'));
+Route::get('todos/agenda', array('uses' => 'TodosController@agenda', 'as' => 'todos.agenda'));
+//Route::patch('todos/accomplish', array('uses' => 'TodosController@accomplish', 'as' => 'todos.accomplish'));
+//Route::patch('todos/todo', array('uses' => 'TodosController@todo', 'as' => 'todos.todo'));
+Route::resource('todos', 'TodosController');

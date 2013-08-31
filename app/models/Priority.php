@@ -1,41 +1,32 @@
 <?php
 
 class Priority extends Eloquent {
-	protected $guarded = array();
 
+	protected $guarded = array();
 	public $timestamps = FALSE;
 
-	public static $rules = array(
+	public $rules = array(
 		'name'		=> 'required|size:1',
 		'order'		=> 'required|integer',
 		'color'		=> 'required|size:6|regex:/^(?:[0-9a-fA-F]{3}){1,2}$/'
 	);
 
 	/**
-	 * Returns an array of $id => $name
+	 * One (priority) has many (todos) relationship. Default order
+	 * of todos is by their order.
 	 *
-	 * @return array
+	 * @return Illuminate\Database\Eloquent\Relations\HasMany
 	 */
-	public static function asOptionsArray()
-	{
-		$priorities = array();
-
-		foreach (self::all() as $priority) {
-			$priorities[$priority->id] = $priority->name;
-		}
-
-		return $priorities;
-	}
-
 	public function todos()
 	{
-		return $this->hasMany('Todo');
+		return $this->hasMany('Todo')
+			->orderBy('todos.order');
 	}
 
 	/**
 	 * Return all the priorities ordered by 'order'.
 	 *
-	 * @param array $columns
+	 * @param  array $columns
 	 * @return Illuminate\Database\Eloquent\Collection
 	 */
 	public static function all($columns = array())
@@ -44,4 +35,21 @@ class Priority extends Eloquent {
 			->orderBy('order')
 			->get();
 	}
+
+	/**
+	 * Returns an array of $id => $name
+	 *
+	 * @return array
+	 */
+	public static function asOptionsArray()
+	{
+		$priorities = array(NULL => '--Select--');
+
+		foreach (self::all() as $priority) {
+			$priorities[$priority->id] = $priority->name;
+		}
+
+		return $priorities;
+	}
+
 }
