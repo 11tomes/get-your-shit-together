@@ -141,7 +141,7 @@ Route::get('blog/{postSlug}', array('as' => 'view-post', 'uses' => 'BlogControll
 Route::post('blog/{postSlug}', 'BlogController@postView');
 
 */
-Route::get('/', array('as' => 'home', 'uses' => 'BlogController@getIndex'));
+Route::get('/', array('as' => 'home', 'uses' => 'HomeController@showWelcome'));
 
 Route::group(array('prefix' => 'settings'), function()
 {
