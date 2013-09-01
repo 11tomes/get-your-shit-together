@@ -1,10 +1,5 @@
 @extends('layouts.scaffold')
 
-@section('styles')
-	@parent
-	{{-- <link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css"> --}}
-@stop
-
 @section('title')
 	Edit Todo
 @stop
@@ -32,8 +27,12 @@
 			{{ Form::select('priority_id', $priorities, NULL, array('class' => 'form-control')) }}
 		</div>
 		<div class="form-group">
+		<?php 
+			$priority_id = Input::old('priority_id', $todo->priority_id);
+			$options = $priority_id ? $todos[$priority_id] : array();
+		?>
 			{{ Form::label('order', 'Place After') }}
-			{{ Form::select('order', $todos, NULL, array('class' => 'form-control')) }}
+			{{ Form::select('order', $options, NULL, array('class' => 'form-control')) }}
 		</div>
 		<div class="form-group">
 			{{ Form::label('completed_at', 'Completed At') }}
@@ -64,17 +63,20 @@
 @stop
 
 @section('scripts')
-	@parent
-	{{--
-	<script type="text/javascript" src="http://tarruda.github.io/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js"></script>
-	<script type="text/javascript" src="http://tarruda.github.io/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js"></script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-		$('#to_be_completed_at').datetimepicker({
-			language: 'en',
-			pick12HourFormat: true
+	<script>
+		$(document).ready(function() {
+			var todos = {{ json_encode($todos) }};
+			var $order = $('#order');
+			var $priority_id = $('#priority_id')
+			$priority_id.change(function() {
+				$order.empty();
+				$.each(todos[$priority_id.val()], function(k, v) {
+					$order.append($('<option></option>')
+						.attr('value', k)
+						.text(v)
+					);
+				});
+			});
 		});
-	});
 	</script>
-	--}}
 @stop

@@ -137,9 +137,13 @@ class TodosController extends AuthorizedController {
 	{
 		$priorities = $this->priority->asOptionsArray();
 
-		$todos = array(0 => '--At the top of selected priority--');
-		foreach ($this->todo->all() as $todo) {
-			$todos['--Place after--'][$todo->id] = $todo->todo;
+		$todos = array();
+		foreach ($this->priority->all() as $priority) {
+			$todos[$priority->id][0] = "--At the top of Priority {$priority->name}--";
+
+			foreach ($priority->todos as $todo) {
+				$todos[$priority->id][$todo->id] = $todo->todo;
+			}
 		}
 
 		$selected_labels = $this->request->old('labels') ?: array();
@@ -204,13 +208,16 @@ class TodosController extends AuthorizedController {
 
 		$priorities = $this->priority->asOptionsArray();
 
-		$todos = array(0 => '--At the top of selected priority--');
-		foreach ($this->todo->all() as $a_todo) {
-			if ($a_todo->id == $id) {
-				continue;
-			}
+		$todos = array();
+		foreach ($this->priority->all() as $priority) {
+			$todos[$priority->id][0] = "--At the top of Priority {$priority->name}--";
 
-			$todos['--Place after--'][$a_todo->id] = $a_todo->todo;
+			// pt = priority_todo
+			foreach ($priority->todos as $pt) {
+				if ($pt->id != $todo->id) {
+					$todos[$priority->id][$pt->id] = $pt->todo;
+				}
+			}
 		}
 
 		$labels = $this->label->asOptionsArray();

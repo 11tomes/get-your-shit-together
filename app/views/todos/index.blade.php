@@ -6,20 +6,13 @@
 @stop
 
 @section('title')
-	View: Todo List
+	{{ $now->toFormattedDateString() }}
 @stop
 
 @section('main')
-@if ($todos->count())
 <table class="table drop-shadow lifted">
-	<thead>
-		<tr>
-			<th colspan="3">
-<h4 class="handwritten">{{ $now->toFormattedDateString() }}</h4>
-			</th>
-		</tr>
-	</thead>
 	<tbody>
+	@if ($todos->count())
 	@foreach ($todos as $todo)
 		<tr>
 			<td>
@@ -40,6 +33,7 @@
 			<td class="handwritten">{{{ $todo->getDaysTillCompletionDate() }}}</td>
 		</tr>
 	@endforeach
+	@endif
 		<tr>
 			<td></td>
 			<td>
@@ -49,7 +43,4 @@
 		</tr>
 	</tbody>
 </table>
-@else
-	{{ link_to_route('todos.create', 'Do something now!', array(), array('class' => 'btn btn-primary')) }}
-@endif
 @stop

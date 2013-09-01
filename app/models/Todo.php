@@ -265,6 +265,7 @@ class Todo extends Eloquent {
 			->join('priorities', 'priorities.id', '=', 'todos.priority_id')
 			->orderBy('priorities.order')
 			->orderBy('todos.order')
+			->orderBy('todos.to_be_completed_at')
 			->get();
 	}
 
