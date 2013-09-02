@@ -7,11 +7,13 @@
 |
 | Register all the admin routes.
 |
+*/
 
 Route::group(array('prefix' => 'admin'), function()
 {
 
 	# Blog Management
+	/*
 	Route::group(array('prefix' => 'blogs'), function()
 	{
 		Route::get('/', array('as' => 'blogs', 'uses' => 'Controllers\Admin\BlogsController@getIndex'));
@@ -22,6 +24,7 @@ Route::group(array('prefix' => 'admin'), function()
 		Route::get('{blogId}/delete', array('as' => 'delete/blog', 'uses' => 'Controllers\Admin\BlogsController@getDelete'));
 		Route::get('{blogId}/restore', array('as' => 'restore/blog', 'uses' => 'Controllers\Admin\BlogsController@getRestore'));
 	});
+	 */
 
 	# User Management
 	Route::group(array('prefix' => 'users'), function()
@@ -51,7 +54,6 @@ Route::group(array('prefix' => 'admin'), function()
 	Route::get('/', array('as' => 'admin', 'uses' => 'Controllers\Admin\DashboardController@getIndex'));
 
 });
-*/
 
 /*
 |--------------------------------------------------------------------------
