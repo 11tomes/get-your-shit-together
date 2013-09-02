@@ -12,6 +12,22 @@ class User extends SentryUserModel {
 	protected $softDelete = true;
 
 	/**
+	 * One (user) is to many (todos) relationship. Default order is by
+	 * completion date
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function todos()
+	{
+		return $this->hasMany('Todo')
+			->select('todos.*')
+			->join('priorities', 'priorities.id', '=', 'todos.priority_id')
+			->orderBy('priorities.order')
+			->orderBy('todos.order')
+			->orderBy('todos.to_be_completed_at');
+	}
+
+	/**
 	 * Returns the user full name, it simply concatenates
 	 * the user first and last name.
 	 *

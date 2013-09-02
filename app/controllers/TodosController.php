@@ -2,7 +2,7 @@
 
 use Carbon\Carbon;
 
-class TodosController extends BaseController {
+class TodosController extends AuthorizedController {
 
 	/**
 	 * Todo Repository
@@ -11,11 +11,26 @@ class TodosController extends BaseController {
 	 */
 	protected $todo;
 
-	// @todo add doc
-	protected $priorities;
+	/**
+	 * Label Repository
+	 *
+	 * @var Label
+	 */
+	protected $label;
 
-	protected $labels;
+	/**
+	 * Priority Repository
+	 *
+	 * @var Priority
+	 */
+	protected $priority;
 
+	/**
+	 * The string to use as key when setting the redirect value
+	 * in Session
+	 *
+	 * @var string
+	 */
 	protected $redirect_key;
 
 	/**
@@ -25,36 +40,38 @@ class TodosController extends BaseController {
 	 */
 	protected $now;
 
-	// @todo: who passes $todo?
-	public function __construct(Todo $todo)
+	/**
+	 *
+	 * @param     Todo $todo
+	 * @param Priority $priority
+	 * @param    Label $label
+	 * @param   Carbon $carbon
+	 */
+	public function __construct(Todo $todo, Priority $priority, Label $label, Carbon $carbon)
 	{
+		parent::__construct();
+
 		$this->todo = $todo;
-		// @todo: refactor
-		$this->priorities = Priority::all();
-		$this->labels = Label::all();
-		$this->now = Carbon::now();
+		$this->priority = $priority;
+		$this->label = $label;
+
+		$this->now = $carbon->now();
 
 		$this->redirect_key = 'addRedirect';
-
-		// @todo refactor this
-		Validator::extend('datetime', function($attribute, $value, $parameters) {
-			try {
-				// @todo use laravel tz
-				Carbon::parse($value, 'America/Vancouver');
-				return TRUE;
-			}
-			catch (\Exception $e) {
-				return FALSE;
-			}
-		});
 	}
 
+	/**
+	 * This redirects to the previous page set by setting the value of
+	 * $this->redirect_key in session
+	 *
+	 * @return Illuminate\Http\RedirectResponse 
+	 */
 	protected function back()
 	{
-		$redirect = Session::get($this->redirect_key);
-		Session::forget($this->redirect_key);
+		$redirect = $this->session->get($this->redirect_key);
+		$this->session->forget($this->redirect_key);
 
-		return Redirect::to($redirect);
+		return $this->redirect->to($redirect);
 	}
 
 	/**
@@ -64,10 +81,10 @@ class TodosController extends BaseController {
 	 */
 	public function labels()
 	{
-		$labels = $this->labels;
-		Session::put($this->redirect_key, Request::url());
+		$labels = $this->label->all();
+		$this->session->put($this->redirect_key, $this->request->url());
 
-		return View::make('todos.labels', compact('labels'));
+		return $this->view->make('todos.labels', compact('labels'));
 	}
 
 	/**
@@ -77,10 +94,10 @@ class TodosController extends BaseController {
 	 */
 	public function priorities()
 	{
-		$priorities = $this->priorities;
-		Session::put($this->redirect_key, Request::url());
+		$priorities = $this->priority->all();
+		$this->session->put($this->redirect_key, $this->request->url());
 
-		return View::make('todos.priorities', compact('priorities'));
+		return $this->view->make('todos.priorities', compact('priorities'));
 	}
 
 	/**
@@ -90,10 +107,10 @@ class TodosController extends BaseController {
 	 */
 	public function agenda()
 	{
-		$completion_dates = Todo::getCompletionDates();
-		Session::put($this->redirect_key, Request::url());
+		$completion_dates = $this->todo->getCompletionDates();
+		$this->session->put($this->redirect_key, $this->request->url());
 
-		return View::make('todos.agenda', compact('completion_dates'));
+		return $this->view->make('todos.agenda', compact('completion_dates'));
 	}
 
 	/**
@@ -103,12 +120,12 @@ class TodosController extends BaseController {
 	 */
 	public function index()
 	{
-		$todos = $this->todo->all();
+		$todos = $this->user->todos;
 		$now = $this->now;
 
-		Session::put($this->redirect_key, Request::url());
+		$this->session->put($this->redirect_key, $this->request->url());
 
-		return View::make('todos.index', compact('todos', 'now'));
+		return $this->view->make('todos.index', compact('todos', 'now'));
 	}
 
 	/**
@@ -118,43 +135,48 @@ class TodosController extends BaseController {
 	 */
 	public function create()
 	{
-		$priorities = Priority::asOptionsArray();
+		$priorities = $this->priority->asOptionsArray();
 
-		$todos = array(0 => '--At the top of selected priority--');
-		foreach ($this->todo->all() as $todo) {
-			$todos['--Place after--'][$todo->id] = $todo->todo;
+		$todos = array();
+		foreach ($this->priority->all() as $priority) {
+			$todos[$priority->id][0] = "--At the top of Priority {$priority->name}--";
+
+			foreach ($priority->todos as $todo) {
+				$todos[$priority->id][$todo->id] = $todo->todo;
+			}
 		}
 
-		$selected_labels = Input::old('labels') ?: array();
+		$selected_labels = $this->request->old('labels') ?: array();
 
-		// @todo: static call?
-		$labels = Label::asOptionsArray();
+		$labels = $this->label->asOptionsArray();
 
-		return View::make('todos.create', compact('priorities', 'labels', 'todos', 'selected_labels'));
+		$user = $this->user;
+
+		return $this->view->make('todos.create', compact('priorities', 'labels', 'todos', 'selected_labels', 'user'));
 	}
 
 	/**
-	 * Redirect to create with old input.
+	 * Redirect to create with old input. Used for quick add.
 	 *
 	 * @return Response
 	 */
 	public function add()
 	{
-		return Redirect::route('todos.create')
+		return $this->redirect->route('todos.create')
 			->withInput();
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Store a newly created todo to database.
 	 *
 	 * @return Response
 	 */
 	public function store()
 	{
-		$todo_input = array_except(Input::all(), array('_token'));
-		$labels_input = Input::get('labels');
+		$todo_input = array_except($this->request->all(), array('_token'));
+		$labels_input = $this->request->input('labels');
 
-		$validation = Validator::make($todo_input, Todo::$rules);
+		$validation = $this->validator->make($todo_input, $this->todo->rules);
 		if ($validation->passes()) {
 			unset($todo_input['labels']);
 			$todo = $this->todo->create($todo_input);
@@ -165,7 +187,7 @@ class TodosController extends BaseController {
 				->with('alert', array('info', 'Added.'));
 		}
 
-		return Redirect::route('todos.create')
+		return $this->redirect->route('todos.create')
 			->withInput()
 			->withErrors($validation)
 			->with('alert', array('danger', 'There were validation errors.'));
@@ -174,66 +196,68 @@ class TodosController extends BaseController {
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function edit($id)
 	{
 		$todo = $this->todo->find($id);
 		if (is_null($todo)) {
-			return Redirect::route('todos.index');
+			return $this->redirect->route('todos.index');
 		}
 
-		$priorities = Priority::asOptionsArray();
+		$priorities = $this->priority->asOptionsArray();
 
-		$todos = array(0 => '--At the top of selected priority--');
-		foreach ($this->todo->all() as $a_todo) {
-			if ($a_todo->id == $id) {
-				continue;
+		$todos = array();
+		foreach ($this->priority->all() as $priority) {
+			$todos[$priority->id][0] = "--At the top of Priority {$priority->name}--";
+
+			// pt = priority_todo
+			foreach ($priority->todos as $pt) {
+				if ($pt->id != $todo->id) {
+					$todos[$priority->id][$pt->id] = $pt->todo;
+				}
 			}
-
-			$todos['--Place after--'][$a_todo->id] = $a_todo->todo;
 		}
 
-		// @todo: static call
-		$labels = Label::asOptionsArray();
+		$labels = $this->label->asOptionsArray();
 
-		return View::make('todos.edit', compact('todo', 'priorities', 'labels', 'todos'));
+		return $this->view->make('todos.edit', compact('todo', 'priorities', 'labels', 'todos'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function update($id)
 	{
-		$todo_input = array_except(Input::all(), array('_method', '_token'));
-		$labels_input = Input::get('labels');
+		$todo = $this->todo->find($id);
+		if (is_null($todo)) {
+			return $this->redirect->route('todos.index');
+		}
 
-		// @todo work around for Input::has
-		$completed_at = Input::get('completed_at');
+		$input = array_except($this->request->all(), array('_method', '_token'));
+
+		// whether completed_at is empty string or has a value,
+		// then this submission is for updating that column only
+		$completed_at = $this->request->input('completed_at');
 		$for_completion = isset($completed_at);
 
 		if ($for_completion) {
 			return $completed_at ? $this->accomplish($id) : $this->todo($id);
 		}
 
-		$validation = Validator::make($todo_input, Todo::$rules);
+		$validation = $this->validator->make($input, $this->todo->rules);
 		if ($validation->passes()) {
-			unset($todo_input['labels']);
-
-			$todo = $this->todo->find($id);
-			$todo->update($todo_input);
-
-			$todo->labels()->sync($labels_input);
+			$todo->update($input);
 
 			return $this->back()
 				->with('alert', array('info', 'Todo up-to-date.'));
 		}
 
-		return Redirect::route('todos.edit', $id)
+		return $this->redirect->route('todos.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('alert', array('danger', 'There were validation errors.'));
@@ -242,7 +266,7 @@ class TodosController extends BaseController {
 	/**
 	 * Mark a todo as completed, today.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function accomplish($id)
@@ -251,21 +275,21 @@ class TodosController extends BaseController {
 		$top_todo = $this->todo->getTopPriority();
 
 		if ($top_todo->id != $todo->id) {
-			return Redirect::route('todos.index')
+			return $this->redirect->route('todos.index')
 				->with('alert', array('danger', 'Nope, not that. You still have more important task to do.'));
 		}
 
 		$input = array('completed_at' => $this->now);
 		$todo->update($input);
 
-		return Redirect::route('todos.index')
+		return $this->redirect->route('todos.index')
 			->with('alert', array('success', 'One down.'));
 	}
 
 	/**
 	 * Mark a todo as not yet completed, again.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function todo($id)
@@ -274,40 +298,27 @@ class TodosController extends BaseController {
 		$input = array('completed_at' => NULL);
 		$todo->update($input);
 
-		return Redirect::route('todos.index')
+		return $this->redirect->route('todos.index')
 			->with('alert', array('info', 'One more, again.'));
-	}
-
-	/**
-	 * Mark a todo as completed today.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function done($id)
-	{
-		$todo = $this->todo->find($id);
-		$input = array(
-			'completed_at' => Carbon::now()
-		);
-		$todo->update($input);
-
-		return Redirect::route('todos.index', $id)
-			->with('alert', array('success', 'One down.'));
 	}
 
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
-		$this->todo->find($id)->delete();
+		$todo = $this->todo->find($id);
+		if ($todo) {
+			$todo->delete();
 
-		return Redirect::route('todos.index')
-			->with('alert', array('success', 'One todo deleted.'));
+			return $this->back()
+				->with('alert', array('info', 'Todo discarded.'));
+		}
+
+		return $this->back();
 	}
 
 }

@@ -19,7 +19,7 @@
 	}
 ?>
 @foreach ($grouped_labels as $labels)
-<div class="col-md-6 col-xs-12 col-sm-10 col-sm-offset-1 col-lg-4">
+<div class="col-md-6">
 @foreach ($labels as $label)
 	<div class="panel drop-shadow lifted" style="padding: 0 !important; border-color: #{{{ $label->color }}} !important;">
 		<div class="panel-heading" style="background: #{{{ $label->color }}} !important; border-color: #{{{ $label->color }}} !important;">
@@ -27,15 +27,9 @@
 		</div>
 		<ul class="list-group">
 		@foreach ($label->todos as $todo)
-			<li class="list-group-item">
-				<i class="icon-check{{ $todo->isDone() ? '' : '-empty' }}"></i>
-				<span class="handwritten"{{ $todo->isDone() ? ' style="text-decoration: line-through;"' : '' }}>
-					{{{ $todo->todo }}}
-				</span>
-			</li>
+			@include('todos/todo')
 		@endforeach
 			<li class="list-group-item">
-				<?php $extra_html = Form::hidden('labels[]', $label->id); ?>
 				@include('todos/add', compact('extra_html'))
 			</li>
 		</ul>

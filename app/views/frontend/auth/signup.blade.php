@@ -18,6 +18,7 @@ Account Sign up ::
 @section('content')
 <form method="post" action="{{ route('signup') }}" autocomplete="off" class="form-signin">
 	<input type="hidden" name="_token" value="{{ csrf_token() }}" />
+	<input type="hidden" name="country" id="country" />
 	<h2 class="form-signin-heading">Sign Up</h2>
 @foreach (array('first_name', 'last_name', 'email', 'email_confirm') as $text_field)
 	{{ Form::text($text_field, Input::old($text_field), array('placeholder' => ucwords(str_replace('_', ' ', $text_field)), 'class' => 'form-control')) }}
@@ -28,4 +29,14 @@ Account Sign up ::
 @endforeach
 	<button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
 </form>
+@stop
+
+@section('scripts')
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jstimezonedetect/1.0.4/jstz.min.js"></script>
+	<script>
+		$(document).ready(function () {
+			var tz = jstz.determine();
+			$('#country').val(tz.name());
+		});
+	</script>
 @stop

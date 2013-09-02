@@ -1,6 +1,6 @@
 <?php
 
-class LabelsController extends BaseController {
+class LabelsController extends AuthorizedController {
 
 	/**
 	 * Label Repository
@@ -9,9 +9,23 @@ class LabelsController extends BaseController {
 	 */
 	protected $label;
 
-	public function __construct(Label $label)
+	/**
+	 * Color repository.
+	 *
+	 * @var color
+	 */
+	protected $color;
+
+	/**
+	 *
+	 * @param Label $label
+	 */
+	public function __construct(Label $label, Color $color)
 	{
+		parent::__construct();
+
 		$this->label = $label;
+		$this->color = $color;
 	}
 
 	/**
@@ -23,7 +37,7 @@ class LabelsController extends BaseController {
 	{
 		$labels = $this->label->all();
 
-		return View::make('labels.index', compact('labels'));
+		return $this->view->make('labels.index', compact('labels'));
 	}
 
 	/**
@@ -33,9 +47,10 @@ class LabelsController extends BaseController {
 	 */
 	public function create()
 	{
-		$labels = $this->label->asOptionsArray();
+		$labels = $this->label->asParentOptionsArray();
+		$colors = $this->color->all();
 
-		return View::make('labels.create', compact('labels'));
+		return $this->view->make('labels.create', compact('labels', 'colors'));
 	}
 
 	/**
@@ -45,17 +60,16 @@ class LabelsController extends BaseController {
 	 */
 	public function store()
 	{
-		$input = Input::all();
-		$validation = Validator::make($input, Label::$rules);
+		$input = $this->request->all();
+		$validation = $this->validator->make($input, $this->label->rules);
 
-		if ($validation->passes())
-		{
+		if ($validation->passes()) {
 			$this->label->create($input);
 
-			return Redirect::route('settings.labels.index');
+			return $this->redirect->route('settings.labels.index');
 		}
 
-		return Redirect::route('settings.labels.create')
+		return $this->redirect->route('settings.labels.create')
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -64,43 +78,46 @@ class LabelsController extends BaseController {
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function edit($id)
 	{
 		$label = $this->label->find($id);
-		$labels = $this->label->asOptionsArray();
-		unset($labels[$label->id]);
-
-		if (is_null($label))
-		{
-			return Redirect::route('settings.labels.index');
+		if (is_null($label)) {
+			return $this->redirect->route('settings.labels.index');
 		}
 
-		return View::make('labels.edit', compact('label', 'labels'));
+		$labels = $this->label->asParentOptionsArray($label);
+		$colors = $this->color->all();
+
+		return $this->view->make('labels.edit', compact('label', 'labels', 'colors'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function update($id)
 	{
-		$input = array_except(Input::all(), '_method');
-		$validation = Validator::make($input, Label::$rules);
+		$label = $this->label->find($id);
+		if (is_null($label)) {
+			return $this->redirect->route('settings.labels.index');
+		}
 
-		if ($validation->passes())
-		{
+		$input = array_except($this->request->all(), '_method');
+		$validation = $this->validator->make($input, $this->label->rules);
+
+		if ($validation->passes()) {
 			$label = $this->label->find($id);
 			$label->update($input);
 
-			return Redirect::route('settings.labels.index');
+			return $this->redirect->route('settings.labels.index');
 		}
 
-		return Redirect::route('settings.labels.edit', $id)
+		return $this->redirect->route('settings.labels.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -109,14 +126,17 @@ class LabelsController extends BaseController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  integer $id
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
-		$this->label->find($id)->delete();
+		$label = $this->label->find($id);
+		if ($label) {
+			$label->delete();
+		}
 
-		return Redirect::route('settings.labels.index');
+		return $this->redirect->route('settings.labels.index');
 	}
 
 }

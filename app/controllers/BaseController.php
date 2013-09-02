@@ -10,16 +10,49 @@ class BaseController extends Controller {
 	protected $messageBag = null;
 
 	/**
+	 *
+	 * @var Session
+	 */
+	protected $session; 
+
+	/**
+	 *
+	 * @var Session
+	 */
+	protected $redirect;
+
+	/**
+	 *
+	 * @var View
+	 */
+	protected $view;
+
+	/**
+	 *
+	 * @var Request
+	 */
+	protected $request;
+
+	/**
+	 *
+	 * @var Validator
+	 */
+	protected $validator;
+
+	/**
 	 * Initializer.
 	 *
-	 * @return void
 	 */
 	public function __construct()
 	{
-		// CSRF Protection
-		$this->beforeFilter('csrf', array('on' => 'post'));
+		$this->session = App::make('session');
+		$this->redirect = App::make('redirect');
+		$this->view = App::make('view');
+		$this->request = App::make('request');
+		$this->validator = App::make('validator');
 
-		//
+		// @todo: move this to config, start or global
+		$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->messageBag = new Illuminate\Support\MessageBag;
 	}
 
@@ -32,7 +65,7 @@ class BaseController extends Controller {
 	{
 		if ( ! is_null($this->layout))
 		{
-			$this->layout = View::make($this->layout);
+			$this->layout = $this->view->make($this->layout);
 		}
 	}
 

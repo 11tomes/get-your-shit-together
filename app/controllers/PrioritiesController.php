@@ -1,6 +1,6 @@
 <?php
 
-class PrioritiesController extends BaseController {
+class PrioritiesController extends AuthorizedController {
 
 	/**
 	 * Priority Repository
@@ -9,9 +9,19 @@ class PrioritiesController extends BaseController {
 	 */
 	protected $priority;
 
-	public function __construct(Priority $priority)
+	/**
+	 * Color Repository
+	 *
+	 * @var Color
+	 */
+	protected $color;
+
+	public function __construct(Priority $priority, Color $color)
 	{
+		parent::__construct();
+
 		$this->priority = $priority;
+		$this->color = $color;
 	}
 
 	/**
@@ -23,7 +33,7 @@ class PrioritiesController extends BaseController {
 	{
 		$priorities = $this->priority->all();
 
-		return View::make('priorities.index', compact('priorities'));
+		return $this->view->make('priorities.index', compact('priorities'));
 	}
 
 	/**
@@ -33,7 +43,9 @@ class PrioritiesController extends BaseController {
 	 */
 	public function create()
 	{
-		return View::make('priorities.create');
+		$colors = $this->color->all();
+
+		return $this->view->make('priorities.create', compact('colors'));
 	}
 
 	/**
@@ -43,17 +55,16 @@ class PrioritiesController extends BaseController {
 	 */
 	public function store()
 	{
-		$input = Input::all();
-		$validation = Validator::make($input, Priority::$rules);
+		$input = $this->request->all();
+		$validation = $this->validator->make($input, $this->priority->rules);
 
-		if ($validation->passes())
-		{
+		if ($validation->passes()) {
 			$this->priority->create($input);
 
-			return Redirect::route('settings.priorities.index');
+			return $this->redirect->route('settings.priorities.index');
 		}
 
-		return Redirect::route('settings.priorities.create')
+		return $this->redirect->route('settings.priorities.create')
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -62,54 +73,57 @@ class PrioritiesController extends BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
 	 * @return Response
 	 */
 	public function show($id)
 	{
 		$priority = $this->priority->findOrFail($id);
 
-		return View::make('priorities.show', compact('priority'));
+		return $this->view->make('priorities.show', compact('priority'));
 	}
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
 	 * @return Response
 	 */
 	public function edit($id)
 	{
 		$priority = $this->priority->find($id);
-
-		if (is_null($priority))
-		{
-			return Redirect::route('settings.priorities.index');
+		if (is_null($priority)) {
+			return $this->redirect->route('settings.priorities.index');
 		}
 
-		return View::make('priorities.edit', compact('priority'));
+		$colors = $this->color->all();
+
+		return $this->view->make('priorities.edit', compact('priority', 'colors'));
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
 	 * @return Response
 	 */
 	public function update($id)
 	{
-		$input = array_except(Input::all(), '_method');
-		$validation = Validator::make($input, Priority::$rules);
-
-		if ($validation->passes())
-		{
-			$priority = $this->priority->find($id);
-			$priority->update($input);
-
-			return Redirect::route('settings.priorities.index');
+		$priority = $this->priority->find($id);
+		if (is_null($priority)) {
+			return $this->redirect->route('settings.priorities.index');
 		}
 
-		return Redirect::route('settings.priorities.edit', $id)
+		$input = array_except($this->request->all(), '_method');
+		$validation = $this->validator->make($input, $this->priority->rules);
+
+		if ($validation->passes()) {
+			$priority->update($input);
+
+			return $this->redirect->route('settings.priorities.index');
+		}
+
+		return $this->redirect->route('settings.priorities.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -118,14 +132,17 @@ class PrioritiesController extends BaseController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int $id
 	 * @return Response
 	 */
 	public function destroy($id)
 	{
-		$this->priority->find($id)->delete();
+		$priority = $this->priority->find($id);
+		if ($priority) {
+			$priority->delete();
+		}
 
-		return Redirect::route('settings.priorities.index');
+		return $this->redirect->route('settings.priorities.index');
 	}
 
 }

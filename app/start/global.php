@@ -17,6 +17,7 @@ ClassLoader::addDirectories(array(
 	app_path().'/controllers',
 	app_path().'/models',
 	app_path().'/database/seeds',
+	app_path().'/libraries',
 
 ));
 
@@ -96,3 +97,8 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+
+Validator::resolver(function($translator, $data, $rules, $messages) {
+	return new ValidatorPlus($translator, $data, $rules, $messages);
+});

@@ -12,22 +12,24 @@
 			{{ Form::label('name', 'Name:') }}
 			{{ Form::text('name', NULL, array('maxlength' => 1, 'class' => 'form-control')) }}
 		</div>
-
 		<div class="form-group">
 			{{ Form::label('order', 'Order:') }}
 			{{ Form::input('number', 'order', NULL, array('class' => 'form-control')) }}
 		</div>
-
 		<div class="form-group">
 			{{ Form::label('color', 'Color:') }}
-			{{ Form::text('color', NULL, array('maxlength' => 6, 'class' => 'form-control')) }}
+			<div class="btn-group" data-toggle="buttons">
+			@foreach ($colors as $color)
+				<label class="btn btn-primary" style="border-color: #{{ $color }}; background-color: #{{ $color }};">
+					{{ Form::radio('color', $color) }} <i class="icon-check-sign"></i>
+				</label>
+			@endforeach
+			</div>
 		</div>
-
 		<div class="form-group">
 			{{ Form::label('description', 'Description:') }}
 			{{ Form::text('description', NULL, array('maxlength' => 144, 'class' => 'form-control')) }}
 		</div>
-
 		<div class="form-group">
 			{{ Form::submit('Submit', array('class' => 'btn btn-primary')) }}
 		</div>

@@ -63,6 +63,8 @@ return array(
 	),
 	"unique"           => "The :attribute has already been taken.",
 	"url"              => "The :attribute format is invalid.",
+	// custom
+	"datetime"         => "The :attribute must be a valid date time.", //@todo: move this
 
 	/*
 	|--------------------------------------------------------------------------
