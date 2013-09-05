@@ -272,12 +272,14 @@ class TodosController extends AuthorizedController {
 	public function accomplish($id)
 	{
 		$todo = $this->todo->find($id);
+		/*
 		$top_todo = $this->todo->getTopPriority();
 
 		if ($top_todo->id != $todo->id) {
 			return $this->redirect->route('todos.index')
 				->with('alert', array('danger', 'Nope, not that. You still have more important task to do.'));
 		}
+		*/
 
 		$input = array('completed_at' => $this->now);
 		$todo->update($input);
