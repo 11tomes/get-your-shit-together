@@ -13,11 +13,10 @@ class AddUserIdToTodosTable extends Migration {
 	public function up()
 	{
 		$first_user = DB::table('users')->orderBy('id')->first();
-		var_dump($first_user);
-		$first_user = $first_user->id;
+		$user_id = $first_user ? $first_user->id  : 1;
 
-		Schema::table('todos', function(Blueprint $table) use ($first_user) {
-			$table->integer('user_id')->unsigned()->default($first_user);
+		Schema::table('todos', function(Blueprint $table) use ($user_id) {
+			$table->integer('user_id')->unsigned()->default($user_id);
 			$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});
 
