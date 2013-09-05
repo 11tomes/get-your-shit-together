@@ -103,16 +103,13 @@ class AuthController extends BaseController {
 	{
 		// Declare the rules for the form validation
 		$rules = array(
-			'first_name'       => 'required|min:3',
-			'last_name'        => 'required|min:3',
 			'email'            => 'required|email|unique:users',
-			'email_confirm'    => 'required|email|same:email',
-			'password'         => 'required|between:3,32',
-			'password_confirm' => 'required|same:password',
+			'password'         => 'required|between:3,32'
 		);
+		$input = array_except(Input::all(), array('token'));
 
 		// Create a new validator instance from our validation rules
-		$validator = Validator::make(Input::all(), $rules);
+		$validator = Validator::make($input, $rules);
 
 		// If validation fails, we'll exit the operation now.
 		if ($validator->fails())
@@ -124,12 +121,7 @@ class AuthController extends BaseController {
 		try
 		{
 			// Register the user
-			$user = Sentry::register(array(
-				'first_name' => Input::get('first_name'),
-				'last_name'  => Input::get('last_name'),
-				'email'      => Input::get('email'),
-				'password'   => Input::get('password'),
-			));
+			$user = Sentry::register($input);
 
 			// Data to be used on the email view
 			$data = array(
