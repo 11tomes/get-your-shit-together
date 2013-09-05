@@ -11,14 +11,14 @@
 	<meta name="author" content="Jon Doe" />
 	<meta name="description" content="Lorem ipsum dolor sit amet, nihil fabulas et sea, nam posse menandri scripserit no, mei." />
 	{{-- Mobile Specific Metas --}}
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	{{-- Basic Stylesheets --}}
-	<link href="{{ asset('assets/css/bootstrap.no-icons.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/css/handlee.css') }}" rel="stylesheet">
 	<link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
-	<link href="{{ asset('assets/css/handlee.css') }}" rel='stylesheet' type='text/css'>
 	<style>
-		body, h1, h2, h3, h4 { font-family: 'Handlee', cursive !important; font-weight: 400; }
 		.handwritten a { color: black !important; }
+		.container { margin-top: 60px; }
 	</style>
 	{{-- Additional Stylesheets --}}
 	@section('styles')
@@ -36,28 +36,28 @@
 	<link rel="apple-touch-icon-precomposed" href="{{ asset('assets/ico/apple-touch-icon-57-precomposed.png') }}">
 	<link rel="shortcut icon" href="{{ asset('assets/ico/favicon.png') }}">
 </head>
-<body>
+<body style="display: none;">
+	@section('navigation')
+	<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+		<div class="navbar-header">
+			<button data-target=".navbar-ex1-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">
+			@section('title')
+				Get Your Sh*t Together
+			@show
+			</a>
+		</div>
+		<div class="collapse navbar-collapse navbar-ex1-collapse">
+			@include('frontend/navigation')
+		</div>
+	</nav>
+	@show
 	<div class="container">
-		@section('navigation')
-		<nav role="navigation" class="navbar navbar-default">
-			<div class="navbar-header">
-				<button data-target=".navbar-ex1-collapse" data-toggle="collapse" class="navbar-toggle" type="button">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a href="#" class="navbar-brand">
-				@section('title')
-					Get Your Sh*t Together
-				@show
-				</a>
-			</div>
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				@include('frontend/navigation')
-			</div>
-		</nav>
-		@show
 
 		{{-- Notifications --}}
 		@include('frontend/notifications')
@@ -73,6 +73,11 @@
 	{{-- Basic Scripts --}}
 	<script src="{{ asset('assets/js/jquery.1.10.2.min.js') }}"></script>
 	<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
+	<script>
+		$(document).ready(function() {
+			$('body').show();
+		});
+	</script>
 	@section('scripts')
 	@show
 </body>

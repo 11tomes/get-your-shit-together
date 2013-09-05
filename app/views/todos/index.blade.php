@@ -10,6 +10,7 @@
 @stop
 
 @section('main')
+<div class="row"><div class="col-md-12">
 <table class="table drop-shadow lifted">
 	<tbody>
 	@if ($todos->count())
@@ -43,4 +44,5 @@
 		</tr>
 	</tbody>
 </table>
+</div></div>
 @stop
