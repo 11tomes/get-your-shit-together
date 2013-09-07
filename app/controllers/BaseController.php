@@ -40,6 +40,14 @@ class BaseController extends Controller {
 	protected $validator;
 
 	/**
+	 * The string to use as key when setting the redirect value
+	 * in Session
+	 *
+	 * @var string
+	 */
+	protected $redirect_key;
+
+	/**
 	 * Initializer.
 	 *
 	 */
@@ -51,9 +59,38 @@ class BaseController extends Controller {
 		$this->request = App::make('request');
 		$this->validator = App::make('validator');
 
+		$this->redirect_key = 'addRedirect';
+
 		// @todo: move this to config, start or global
 		$this->beforeFilter('csrf', array('on' => 'post'));
 		$this->messageBag = new Illuminate\Support\MessageBag;
+	}
+
+	/**
+	 * This redirects to the previous page set using setAsPreviousPage()
+	 * In other words, this "redirect to the previous page".
+	 *
+	 * @return Illuminate\Http\RedirectResponse 
+	 */
+	protected function back()
+	{
+		$redirect = $this->session->get($this->redirect_key);
+		$this->session->forget($this->redirect_key);
+
+		return $this->redirect->to($redirect);
+	}
+
+	/**
+	 * Remember the current URL as the previous page. 
+	 * Used in conjunction with back()
+	 *
+	 * @return self
+	 */
+	protected function setAsPreviousPage()
+	{
+		$this->session->put($this->redirect_key, $this->request->url());
+
+		return $this;
 	}
 
 	/**

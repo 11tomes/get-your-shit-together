@@ -18,7 +18,7 @@
 		<tr>
 			<td>
 			{{ Form::model($todo, array('method' => 'PATCH', 'route' => array('todos.update', $todo->id))) }}
-				{{ Form::hidden('completed_at', ($todo->isDone() ? '' : $now)) }}
+				{{ Form::hidden('completed_at', ($todo->isDone() ? '' : 'now')) }}
 				<i class="icon-check{{ $todo->isDone() ? '' : '-empty' }}" onclick="$(this).parents('form').submit();" style="cursor: pointer;"></i>
 			{{ Form::close() }}
 			</td>
