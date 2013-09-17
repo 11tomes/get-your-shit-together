@@ -26,14 +26,6 @@ class TodosController extends AuthorizedController {
 	protected $priority;
 
 	/**
-	 * The string to use as key when setting the redirect value
-	 * in Session
-	 *
-	 * @var string
-	 */
-	protected $redirect_key;
-
-	/**
 	 * Represents the current timestamp
 	 *
 	 * @var Carbon
@@ -56,22 +48,6 @@ class TodosController extends AuthorizedController {
 		$this->label = $label;
 
 		$this->now = $carbon->now();
-
-		$this->redirect_key = 'addRedirect';
-	}
-
-	/**
-	 * This redirects to the previous page set by setting the value of
-	 * $this->redirect_key in session
-	 *
-	 * @return Illuminate\Http\RedirectResponse 
-	 */
-	protected function back()
-	{
-		$redirect = $this->session->get($this->redirect_key);
-		$this->session->forget($this->redirect_key);
-
-		return $this->redirect->to($redirect);
 	}
 
 	/**
@@ -82,7 +58,7 @@ class TodosController extends AuthorizedController {
 	public function labels()
 	{
 		$labels = $this->label->all();
-		$this->session->put($this->redirect_key, $this->request->url());
+		$this->setAsPreviousPage();
 
 		return $this->view->make('todos.labels', compact('labels'));
 	}
@@ -95,7 +71,7 @@ class TodosController extends AuthorizedController {
 	public function priorities()
 	{
 		$priorities = $this->priority->all();
-		$this->session->put($this->redirect_key, $this->request->url());
+		$this->setAsPreviousPage();
 
 		return $this->view->make('todos.priorities', compact('priorities'));
 	}
@@ -108,7 +84,7 @@ class TodosController extends AuthorizedController {
 	public function agenda()
 	{
 		$completion_dates = $this->todo->getCompletionDates();
-		$this->session->put($this->redirect_key, $this->request->url());
+		$this->setAsPreviousPage();
 
 		return $this->view->make('todos.agenda', compact('completion_dates'));
 	}
@@ -123,7 +99,7 @@ class TodosController extends AuthorizedController {
 		$todos = $this->user->todos;
 		$now = $this->now;
 
-		$this->session->put($this->redirect_key, $this->request->url());
+		$this->setAsPreviousPage();
 
 		return $this->view->make('todos.index', compact('todos', 'now'));
 	}
@@ -284,7 +260,7 @@ class TodosController extends AuthorizedController {
 		$input = array('completed_at' => $this->now);
 		$todo->update($input);
 
-		return $this->redirect->route('todos.index')
+		return $this->back()
 			->with('alert', array('success', 'One down.'));
 	}
 
@@ -300,7 +276,7 @@ class TodosController extends AuthorizedController {
 		$input = array('completed_at' => NULL);
 		$todo->update($input);
 
-		return $this->redirect->route('todos.index')
+		return $this->back()
 			->with('alert', array('info', 'One more, again.'));
 	}
 
