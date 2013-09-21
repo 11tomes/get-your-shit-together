@@ -3,9 +3,8 @@
 <head>
 	<meta charset="utf-8" />
 	<title>
-		@section('title')
-		@show
-		| Get Your Sh*t Together
+		@section('title') 
+		@show | Get Your Sh*t Together
 	</title>
 	<meta name="keywords" content="your, awesome, keywords, here" />
 	<meta name="author" content="Jon Doe" />
@@ -13,9 +12,7 @@
 	{{-- Mobile Specific Metas --}}
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	{{-- Basic Stylesheets --}}
-	<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
-	<link href="{{ asset('assets/css/handlee.css') }}" rel="stylesheet">
-	<link href="{{ asset('assets/css/font-awesome.min.css') }}" rel="stylesheet">
+	<link href="{{ asset('assets/css/css.css') }}" rel="stylesheet">
 	<style>
 		.handwritten a { color: black !important; }
 		.container { margin-top: 60px; }
@@ -71,9 +68,25 @@
 	</div>
 
 	{{-- Basic Scripts --}}
-	<script src="{{ asset('assets/js/jquery.1.10.2.min.js') }}"></script>
-	<script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
-	<script>
+	<script src="{{ asset('assets/js/js.js') }}"></script>
+	{{--
+	<script type="text/javascript">
+		// Add a script element as a child of the body
+		function downloadJSAtOnload() {
+			var element = document.createElement("script");
+			element.src = "js.js";
+			document.head.appendChild(element);
+		}
+		// Check for browser support of event handling capability
+		if (window.addEventListener)
+			window.addEventListener("load", downloadJSAtOnload, false);
+		else if (window.attachEvent)
+			window.attachEvent("onload", downloadJSAtOnload);
+		else 
+			window.onload = downloadJSAtOnload;
+	</script>
+	--}}
+	<script type="text/javascript">
 		$(document).ready(function() {
 			$('body').show();
 		});
